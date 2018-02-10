@@ -12,6 +12,8 @@
 		185F027B202F69D8006456EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F0279202F69D8006456EE /* Main.storyboard */; };
 		185F027D202F69D8006456EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 185F027C202F69D8006456EE /* Assets.xcassets */; };
 		185F0280202F69D8006456EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F027E202F69D8006456EE /* LaunchScreen.storyboard */; };
+		185F028B202F9057006456EE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F028A202F9057006456EE /* SignUpViewController.swift */; };
+		185F028D202F9481006456EE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F028C202F9481006456EE /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		185F027C202F69D8006456EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		185F027F202F69D8006456EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		185F0281202F69D8006456EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		185F028A202F9057006456EE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		185F028C202F9481006456EE /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +58,40 @@
 		185F0274202F69D8006456EE /* FirebaseChat */ = {
 			isa = PBXGroup;
 			children = (
-				185F0275202F69D8006456EE /* AppDelegate.swift */,
-				185F0277202F69D8006456EE /* ViewController.swift */,
-				185F0279202F69D8006456EE /* Main.storyboard */,
-				185F027C202F69D8006456EE /* Assets.xcassets */,
-				185F027E202F69D8006456EE /* LaunchScreen.storyboard */,
+				185F0288202F69EA006456EE /* View Controller */,
+				185F0287202F69E4006456EE /* View */,
+				185F0289202F6A0B006456EE /* Supporting Files */,
 				185F0281202F69D8006456EE /* Info.plist */,
+				185F028C202F9481006456EE /* Message.swift */,
 			);
 			path = FirebaseChat;
+			sourceTree = "<group>";
+		};
+		185F0287202F69E4006456EE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				185F0279202F69D8006456EE /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		185F0288202F69EA006456EE /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				185F0277202F69D8006456EE /* ViewController.swift */,
+				185F028A202F9057006456EE /* SignUpViewController.swift */,
+			);
+			path = "View Controller";
+			sourceTree = "<group>";
+		};
+		185F0289202F6A0B006456EE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				185F027C202F69D8006456EE /* Assets.xcassets */,
+				185F0275202F69D8006456EE /* AppDelegate.swift */,
+				185F027E202F69D8006456EE /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +166,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				185F028B202F9057006456EE /* SignUpViewController.swift in Sources */,
+				185F028D202F9481006456EE /* Message.swift in Sources */,
 				185F0278202F69D8006456EE /* ViewController.swift in Sources */,
 				185F0276202F69D8006456EE /* AppDelegate.swift in Sources */,
 			);
