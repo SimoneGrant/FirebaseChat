@@ -354,25 +354,28 @@
                             <outlet property="delegate" destination="yRT-Kd-4St" id="Y7R-5m-MGI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Ufd-QR-LuZ">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ufd-QR-LuZ">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="5TQ-v7-JXd">
                             <connections>
                                 <action selector="logOutTriggered:" destination="yRT-Kd-4St" id="06s-bI-EVd"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="compose" id="R5P-uW-mIs">
-                                <connections>
-                                    <action selector="createNewMessage:" destination="yRT-Kd-4St" id="INS-cY-Pjz"/>
-                                </connections>
-                            </barButtonItem>
                             <barButtonItem systemItem="camera" id="FfJ-er-yc8">
                                 <connections>
                                     <action selector="changeUserImageTriggered:" destination="yRT-Kd-4St" id="Zwr-zN-DTb"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem systemItem="compose" id="R5P-uW-mIs">
+                                <connections>
+                                    <action selector="createNewMessage:" destination="yRT-Kd-4St" id="INS-cY-Pjz"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="pickerButton" destination="FfJ-er-yc8" id="b4K-CJ-A6q"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gq8-5n-q6u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

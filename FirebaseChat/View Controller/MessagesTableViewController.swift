@@ -12,6 +12,9 @@ import SVProgressHUD
 
 class MessagesTableViewController: UITableViewController, UINavigationControllerDelegate {
 
+    @IBOutlet weak var pickerButton: UIBarButtonItem!
+    let imageView = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        isUserLoggedIn()
@@ -71,9 +74,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     // MARK: - Nav Bar Image
     //https://stackoverflow.com/questions/47062176/image-for-navigation-bar-with-large-title-ios-11
-    
-    private let imageView = UIImageView(image: UIImage(named: "man"))
-    
+
     private func setupUI() {
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -128,6 +129,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let height = navigationController?.navigationBar.frame.height else { return }
         moveAndResizeImage(for: height)
+        
     }
 }
 
@@ -150,6 +152,7 @@ extension MessagesTableViewController: UIImagePickerControllerDelegate {
         if let image = userSelectedImage {
             //navigationImageView.image = image
             imageView.image = image
+
         }
         self.dismiss(animated: true, completion: nil)
     }
