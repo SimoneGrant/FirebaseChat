@@ -29,9 +29,25 @@ class SignUpViewController: UIViewController {
     // MARK: - Action
     
     @IBAction func signUpTriggered(_ sender: UIButton) {
+        SVProgressHUD.show()
+        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
+            if error != nil {
+                print(error!)
+            } else {
+                print("Successful registration")
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                }
+                self.performSegue(withIdentifier: "signUpToChat", sender: self)
+            }
+        }
     }
     
-
+    @IBAction func LoginRequested(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login") as! LoginViewController
+        self.present(vc, animated: true, completion: nil)
+    }
+    
 
     /*
     // MARK: - Navigation

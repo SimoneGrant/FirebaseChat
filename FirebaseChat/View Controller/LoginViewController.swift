@@ -28,11 +28,29 @@ class LoginViewController: UIViewController {
     // MARK: - Action
     
     @IBAction func loginPressed(_ sender: UIButton) {
-        
+        SVProgressHUD.show()
+        Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
+            if error != nil {
+                print(error!)
+            } else {
+                print("successful login")
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                }
+                self.performSegue(withIdentifier: "loginToChat", sender: self)
+            }
+        }
     }
     
 
-
-
+    @IBAction func signUpRequested(_ sender: UIButton) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "SignUp") as! SignUpViewController
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func resetPasswordTriggered(_ sender: UIButton) {
+        print("password reset requested")
+    }
+    
 }
 
