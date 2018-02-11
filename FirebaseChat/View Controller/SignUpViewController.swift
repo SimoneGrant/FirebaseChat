@@ -11,7 +11,7 @@ import Firebase
 import SVProgressHUD
 
 class SignUpViewController: UIViewController {
-
+    
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -23,7 +23,7 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         
     }
     
@@ -36,19 +36,28 @@ class SignUpViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 print(error!)
-            }
-            print("Successful registration")
-            
-            guard let uid = user?.uid else { return }
-            let ref = Database.database().reference(fromURL: "https://fir-chat-912af.firebaseio.com/")
-            let userRef = ref.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            userRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
-                if error != nil {
-                    print(error!)
+                
+            } else {
+                print("Successful registration")
+                guard let uid = user?.uid else { return }
+                
+                //Create a default profile picture per user
+                let uniqueUserImage = NSUUID().uuidString
+                let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
+                if let uploadData = UIImagePNGRepresentation(UIImage(named: "anon")!) {
+                    storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                            //save image here
+                            let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl]
+                            self.registerUserInfo(with: uid, values: values as [String : AnyObject])
+                        }
+                    })
                 }
-                self.performSegue(withIdentifier: "signUpToChat", sender: self)
-            })
+            }
         }
     }
     
@@ -57,15 +66,17 @@ class SignUpViewController: UIViewController {
         self.present(vc, animated: true, completion: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    //UPLOAD USER INFO
+    private func registerUserInfo(with uid: String, values: [String: AnyObject]) {
+        let ref = Database.database().reference(fromURL: "https://fir-chat-912af.firebaseio.com/")
+        let userRef = ref.child("users").child(uid)
+        userRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+            if error != nil {
+                print(error!)
+            } else {
+                self.performSegue(withIdentifier: "signUpToChat", sender: self)
+            }
+        })
     }
-    */
 
 }

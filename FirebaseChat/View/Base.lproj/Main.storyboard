@@ -76,7 +76,6 @@
                                 </state>
                                 <connections>
                                     <action selector="loginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bla-t2-WZz"/>
-                                    <segue destination="8Yx-Uk-FPx" kind="show" identifier="loginToChat" id="qbW-uk-gJx"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chat" translatesAutoresizingMaskIntoConstraints="NO" id="jUZ-I5-hXA">
@@ -170,6 +169,7 @@
                         <outlet property="passwordTextField" destination="mJX-9D-H3t" id="w7T-eb-y7v"/>
                         <outlet property="resetPasswordButton" destination="Q4E-dg-o0f" id="TfS-AL-5KI"/>
                         <outlet property="twitterButton" destination="4kT-tX-NN0" id="ali-Bt-4sX"/>
+                        <segue destination="8Yx-Uk-FPx" kind="show" identifier="loginToChat" id="WmO-We-UWa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -218,7 +218,6 @@
                                         </state>
                                         <connections>
                                             <action selector="signUpTriggered:" destination="onm-Qc-sxK" eventType="touchUpInside" id="QeR-rf-YDd"/>
-                                            <segue destination="8Yx-Uk-FPx" kind="show" identifier="signUpToChat" id="0CP-zP-0Oe"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chat" translatesAutoresizingMaskIntoConstraints="NO" id="NM6-pS-E58">
@@ -325,6 +324,7 @@
                         <outlet property="passwordTextField" destination="wJt-O4-LrZ" id="FLB-ZI-VKr"/>
                         <outlet property="signUpButton" destination="NSX-ru-m7a" id="2hT-Ey-br6"/>
                         <outlet property="twitterLoginButton" destination="cDN-kP-P6H" id="pIR-OI-2Z9"/>
+                        <segue destination="8Yx-Uk-FPx" kind="show" identifier="signUpToChat" id="Ien-F1-2u6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7cK-lE-4Y8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -454,6 +454,6 @@
         <image name="twitter" width="144" height="144"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0CP-zP-0Oe"/>
+        <segue reference="Ien-F1-2u6"/>
     </inferredMetricsTieBreakers>
 </document>

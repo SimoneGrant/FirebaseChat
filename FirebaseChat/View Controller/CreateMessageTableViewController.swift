@@ -37,6 +37,7 @@ class CreateMessageTableViewController: UITableViewController {
                 let user = User()
                 user.email = dict["email"] as? String
                 user.name = dict["name"] as? String
+                user.profileImageUrl = dict["profileImageUrl"] as? String
                 
                 print(user.name!, user.email!)
                 self.users.append(user)

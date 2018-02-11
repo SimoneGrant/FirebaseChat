@@ -17,7 +17,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        isUserLoggedIn()
+        isUserLoggedIn()
         setupUI()
     }
     
@@ -69,6 +69,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
+        uploadToStorage()
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -130,6 +131,26 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         guard let height = navigationController?.navigationBar.frame.height else { return }
         moveAndResizeImage(for: height)
         
+    }
+    
+    // MARK: - Storage
+    
+    func uploadToStorage() {
+        //create unique image id for users
+        let uniqueUserImage = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
+        if let uploadData = UIImagePNGRepresentation(imageView.image!) {
+            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                if error != nil {
+                    print(error)
+                    return
+                }
+                print(metadata)
+                if let imageURL = metadata?.downloadURL()?.absoluteString {
+                    //save image here
+                }
+            })
+        }
     }
 }
 
