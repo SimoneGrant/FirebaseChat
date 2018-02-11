@@ -7,14 +7,30 @@
 //
 
 import UIKit
+import Firebase
+import SVProgressHUD
 
 class SignUpViewController: UIViewController {
 
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var gmailLoginButton: UIButton!
+    @IBOutlet weak var facebookLoginButton: UIButton!
+    @IBOutlet weak var twitterLoginButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
     }
+    
+    // MARK: - Action
+    
+    @IBAction func signUpTriggered(_ sender: UIButton) {
+    }
+    
 
 
     /*

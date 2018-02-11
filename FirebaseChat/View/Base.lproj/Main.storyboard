@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="onm-Qc-sxK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,7 +29,20 @@
                             </imageView>
                             <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQz-Eb-l5B">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q4E-dg-o0f">
+                                        <rect key="frame" x="137" y="578" width="100" height="32"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                        <state key="normal" title="Reset Password">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Q4E-dg-o0f" secondAttribute="bottom" constant="57" id="AFX-il-U5p"/>
+                                    <constraint firstItem="Q4E-dg-o0f" firstAttribute="centerX" secondItem="CQz-Eb-l5B" secondAttribute="centerX" id="j67-iq-Zaf"/>
+                                </constraints>
                             </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Email" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bJf-Ab-ClR">
                                 <rect key="frame" x="55" y="250" width="265" height="30"/>
@@ -50,6 +63,10 @@
                                 <state key="normal" title="LOGIN">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="loginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bla-t2-WZz"/>
+                                    <segue destination="yRT-Kd-4St" kind="show" identifier="loginToChat" id="qbW-uk-gJx"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chat" translatesAutoresizingMaskIntoConstraints="NO" id="jUZ-I5-hXA">
                                 <rect key="frame" x="67" y="61" width="240" height="128"/>
@@ -92,8 +109,8 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ag8-48-pgj">
-                                <rect key="frame" x="141" y="589" width="93" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ag8-48-pgj">
+                                <rect key="frame" x="188" y="589" width="0.0" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="Pkp-2z-r2Q"/>
                                 </constraints>
@@ -133,10 +150,19 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="bJf-Ab-ClR" id="5kn-J5-gHe"/>
+                        <outlet property="facebookButton" destination="moD-P4-6g1" id="c3d-ZE-wYv"/>
+                        <outlet property="gmailButton" destination="fdC-Hj-JWE" id="XyI-6i-gat"/>
+                        <outlet property="loginButton" destination="TiG-QU-WiX" id="RrQ-gL-oCU"/>
+                        <outlet property="passwordTextField" destination="mJX-9D-H3t" id="w7T-eb-y7v"/>
+                        <outlet property="resetPasswordButton" destination="Q4E-dg-o0f" id="TfS-AL-5KI"/>
+                        <outlet property="twitterButton" destination="4kT-tX-NN0" id="ali-Bt-4sX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-305" y="72"/>
+            <point key="canvasLocation" x="569" y="423"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="nvf-rX-OM9">
@@ -172,6 +198,10 @@
                                         <state key="normal" title="SIGN UP">
                                             <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="signUpTriggered:" destination="onm-Qc-sxK" eventType="touchUpInside" id="QeR-rf-YDd"/>
+                                            <segue destination="yRT-Kd-4St" kind="show" identifier="signUpToChat" id="0CP-zP-0Oe"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chat" translatesAutoresizingMaskIntoConstraints="NO" id="NM6-pS-E58">
                                         <rect key="frame" x="67" y="90" width="240" height="130"/>
@@ -253,10 +283,47 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HgQ-CJ-o85"/>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="ZpZ-p9-iIq" id="Hq2-ri-F98"/>
+                        <outlet property="facebookLoginButton" destination="oay-YG-WBp" id="ASQ-au-7qv"/>
+                        <outlet property="gmailLoginButton" destination="VUh-hf-klx" id="JHX-3f-YAv"/>
+                        <outlet property="iconImageView" destination="NM6-pS-E58" id="Zg4-34-QHX"/>
+                        <outlet property="passwordTextField" destination="wJt-O4-LrZ" id="FLB-ZI-VKr"/>
+                        <outlet property="signUpButton" destination="NSX-ru-m7a" id="2hT-Ey-br6"/>
+                        <outlet property="twitterLoginButton" destination="cDN-kP-P6H" id="pIR-OI-2Z9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7cK-lE-4Y8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="521" y="68"/>
+            <point key="canvasLocation" x="569" y="-267"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="kuN-2l-AgI">
+            <objects>
+                <tableViewController id="yRT-Kd-4St" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qOr-KT-QCU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="y6d-0u-6Bl">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y6d-0u-6Bl" id="7f9-Dm-7yY">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="yRT-Kd-4St" id="etb-mG-k5d"/>
+                            <outlet property="delegate" destination="yRT-Kd-4St" id="Y7R-5m-MGI"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gq8-5n-q6u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1344" y="71"/>
         </scene>
     </scenes>
     <resources>
@@ -267,4 +334,7 @@
         <image name="people_sun" width="1500" height="750"/>
         <image name="twitter" width="144" height="144"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="0CP-zP-0Oe"/>
+    </inferredMetricsTieBreakers>
 </document>
