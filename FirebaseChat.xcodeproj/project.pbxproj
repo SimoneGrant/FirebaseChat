@@ -10,6 +10,7 @@
 		18303CE0202FE21D00C9932A /* MessagesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CDF202FE21D00C9932A /* MessagesTableViewController.swift */; };
 		18303CE2202FEF9100C9932A /* CreateMessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE1202FEF9100C9932A /* CreateMessageTableViewController.swift */; };
 		18303CE5202FF53800C9932A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE4202FF53800C9932A /* User.swift */; };
+		18303CE720300FCA00C9932A /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE620300FCA00C9932A /* ProfileImage.swift */; };
 		185F0276202F69D8006456EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0275202F69D8006456EE /* AppDelegate.swift */; };
 		185F0278202F69D8006456EE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0277202F69D8006456EE /* LoginViewController.swift */; };
 		185F027B202F69D8006456EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F0279202F69D8006456EE /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 		18303CDF202FE21D00C9932A /* MessagesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableViewController.swift; sourceTree = "<group>"; };
 		18303CE1202FEF9100C9932A /* CreateMessageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessageTableViewController.swift; sourceTree = "<group>"; };
 		18303CE4202FF53800C9932A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		18303CE620300FCA00C9932A /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
 		185F0272202F69D8006456EE /* FirebaseChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		185F0275202F69D8006456EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		185F0277202F69D8006456EE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				18303CE4202FF53800C9932A /* User.swift */,
+				18303CE620300FCA00C9932A /* ProfileImage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				185F028B202F9057006456EE /* SignUpViewController.swift in Sources */,
+				18303CE720300FCA00C9932A /* ProfileImage.swift in Sources */,
 				18303CE2202FEF9100C9932A /* CreateMessageTableViewController.swift in Sources */,
 				185F028D202F9481006456EE /* Message.swift in Sources */,
 				185F0278202F69D8006456EE /* LoginViewController.swift in Sources */,

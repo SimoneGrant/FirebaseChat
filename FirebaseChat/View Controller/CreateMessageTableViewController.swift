@@ -55,9 +55,10 @@ class CreateMessageTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath)
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
+        cell.detailTextLabel?.text = user.email
         return cell
     }
 
