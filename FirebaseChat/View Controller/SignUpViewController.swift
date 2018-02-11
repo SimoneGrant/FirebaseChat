@@ -19,6 +19,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var gmailLoginButton: UIButton!
     @IBOutlet weak var facebookLoginButton: UIButton!
     @IBOutlet weak var twitterLoginButton: UIButton!
+    @IBOutlet weak var nameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,19 +28,27 @@ class SignUpViewController: UIViewController {
     }
     
     // MARK: - Action
-    
+    //TODO: Error handling
     @IBAction func signUpTriggered(_ sender: UIButton) {
-        SVProgressHUD.show()
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        guard let name = nameTextField.text else { return }
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 print(error!)
-            } else {
-                print("Successful registration")
-                DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
+            }
+            print("Successful registration")
+            
+            guard let uid = user?.uid else { return }
+            let ref = Database.database().reference(fromURL: "https://fir-chat-912af.firebaseio.com/")
+            let userRef = ref.child("users").child(uid)
+            let values = ["name": name, "email": email]
+            userRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
+                if error != nil {
+                    print(error!)
                 }
                 self.performSegue(withIdentifier: "signUpToChat", sender: self)
-            }
+            })
         }
     }
     

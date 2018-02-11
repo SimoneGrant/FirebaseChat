@@ -28,15 +28,15 @@ class LoginViewController: UIViewController {
     // MARK: - Action
     
     @IBAction func loginPressed(_ sender: UIButton) {
-        SVProgressHUD.show()
+//        SVProgressHUD.show()
         Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!) { (user, error) in
             if error != nil {
                 print(error!)
             } else {
                 print("successful login")
-                DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                }
+//                DispatchQueue.main.async {
+//                    SVProgressHUD.dismiss()
+//                }
                 self.performSegue(withIdentifier: "loginToChat", sender: self)
             }
         }
