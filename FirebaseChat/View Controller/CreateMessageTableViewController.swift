@@ -38,8 +38,7 @@ class CreateMessageTableViewController: UITableViewController {
                 user.email = dict["email"] as? String
                 user.name = dict["name"] as? String
                 user.profileImageUrl = dict["profileImageUrl"] as? String
-                
-                print(user.name!, user.email!)
+
                 self.users.append(user)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -60,6 +59,10 @@ class CreateMessageTableViewController: UITableViewController {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
+        if let profileImg = user.profileImageUrl {
+            print(profileImg)
+            cell.imageView?.image = UIImage(named: profileImg) //?? UIImage(named: "man")
+        }
         return cell
     }
 

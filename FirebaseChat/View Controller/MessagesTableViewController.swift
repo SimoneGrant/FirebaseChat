@@ -11,20 +11,20 @@ import Firebase
 import SVProgressHUD
 
 class MessagesTableViewController: UITableViewController, UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var pickerButton: UIBarButtonItem!
-    let imageView = UIImageView()
+    let profileImageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isUserLoggedIn()
         setupUI()
+        isUserLoggedIn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         isUserLoggedIn()
     }
-
+    
     // MARK: - Setup and Action
     
     func logOutUser() {
@@ -45,14 +45,15 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         } else {
             let uid = Auth.auth().currentUser?.uid
             Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-//                print(snapshot)
+                //                print(snapshot)
                 if let dict = snapshot.value as? [String: AnyObject] {
                     self.navigationItem.title = dict["name"] as? String
+                    //                    self.imageView.image = UIImage(named: dict["profileImageUrl"] as! String) ?? UIImage()
                 }
             })
         }
-}
-
+    }
+    
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
         logOutUser()
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login") as! LoginViewController
@@ -69,31 +70,30 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
-        uploadToStorage()
         present(imagePicker, animated: true, completion: nil)
     }
     
     // MARK: - Nav Bar Image
     //https://stackoverflow.com/questions/47062176/image-for-navigation-bar-with-large-title-ios-11
-
+    
     private func setupUI() {
         navigationController?.navigationBar.prefersLargeTitles = true
         
-//        title = "Large Title"
+        //        title = "Large Title"
         
         // Initial setup for image for Large NavBar state since the the screen always has Large NavBar once it gets opened
         guard let navigationBar = self.navigationController?.navigationBar else { return }
-        navigationBar.addSubview(imageView)
-        imageView.layer.cornerRadius = Const.ImageSizeForLargeState / 2
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        navigationBar.addSubview(profileImageView)
+        profileImageView.layer.cornerRadius = Const.ImageSizeForLargeState / 2
+        profileImageView.clipsToBounds = true
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageView.rightAnchor.constraint(equalTo: navigationBar.rightAnchor,
-                                             constant: -Const.ImageRightMargin),
-            imageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor,
-                                              constant: -Const.ImageBottomMarginForLargeState),
-            imageView.heightAnchor.constraint(equalToConstant: Const.ImageSizeForLargeState),
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
+            profileImageView.rightAnchor.constraint(equalTo: navigationBar.rightAnchor,
+                                                    constant: -Const.ImageRightMargin),
+            profileImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor,
+                                                     constant: -Const.ImageBottomMarginForLargeState),
+            profileImageView.heightAnchor.constraint(equalToConstant: Const.ImageSizeForLargeState),
+            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor)
             ])
     }
     
@@ -122,7 +122,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         
         let xTranslation = max(0, sizeDiff - coeff * sizeDiff)
         
-        imageView.transform = CGAffineTransform.identity
+        profileImageView.transform = CGAffineTransform.identity
             .scaledBy(x: scale, y: scale)
             .translatedBy(x: xTranslation, y: yTranslation)
     }
@@ -135,23 +135,32 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     // MARK: - Storage
     
-    func uploadToStorage() {
-        //create unique image id for users
-        let uniqueUserImage = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
-        if let uploadData = UIImagePNGRepresentation(imageView.image!) {
-            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                if error != nil {
-                    print(error)
-                    return
-                }
-                print(metadata)
-                if let imageURL = metadata?.downloadURL()?.absoluteString {
-                    //save image here
-                }
-            })
+        func updateNewProfilePic() {
+            //create unique image id for users
+            let uniqueUserImage = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
+            let databaseRef = Database.database().reference()
+            guard let userID = Auth.auth().currentUser?.uid else { return }
+            if let uploadData = UIImagePNGRepresentation(profileImageView.image!) {
+                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+//                    print(metadata)
+                    if let imageURL = metadata?.downloadURL()?.absoluteString {
+                        //save image here
+                        databaseRef.child("users").child(userID).child("profileImageUrl").setValue(imageURL, withCompletionBlock: { (error, ref) in
+                            if error != nil {
+                                print(error!)
+                                return
+                            }
+                            print("successful image upload")
+                        })
+                    }
+                })
+            }
         }
-    }
 }
 
 extension MessagesTableViewController: UIImagePickerControllerDelegate {
@@ -162,7 +171,7 @@ extension MessagesTableViewController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        print(info)
+        //        print(info)
         var userSelectedImage: UIImage?
         if let pickerEditedImg = info["UIImagePickerControllerEditedImage"] as? UIImage {
             userSelectedImage = pickerEditedImg
@@ -172,9 +181,10 @@ extension MessagesTableViewController: UIImagePickerControllerDelegate {
         
         if let image = userSelectedImage {
             //navigationImageView.image = image
-            imageView.image = image
-
+            profileImageView.image = image
+            
         }
+        updateNewProfilePic()
         self.dismiss(animated: true, completion: nil)
     }
 }
