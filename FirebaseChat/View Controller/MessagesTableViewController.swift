@@ -21,21 +21,13 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         isUserLoggedIn()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        //        isUserLoggedIn()
-    }
-    
     // MARK: - Setup and Action
     
     func logOutUser() {
-        SVProgressHUD.show()
         do {
             try Auth.auth().signOut()
         } catch {
             print("Could not log user out", error)
-        }
-        DispatchQueue.main.async {
-            SVProgressHUD.dismiss()
         }
     }
     
@@ -43,18 +35,22 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         if Auth.auth().currentUser?.uid == nil {
             logOutUser()
         } else {
-            let uid = Auth.auth().currentUser?.uid
-            Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                //                print(snapshot)
-                if let dict = snapshot.value as? [String: AnyObject] {
-                    self.navigationItem.title = dict["name"] as? String
-                    
-                    if let profilePicURL = dict["profileImageUrl"] as? String {
-                        self.profileImageView.loadImageWithCache(using: profilePicURL)
-                    }
-                }
-            })
+            setUpNavBarForUser()
         }
+    }
+    
+    func setUpNavBarForUser() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+ Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            //                print(snapshot)
+            if let dict = snapshot.value as? [String: AnyObject] {
+                self.navigationItem.title = dict["name"] as? String
+                
+                if let profilePicURL = dict["profileImageUrl"] as? String {
+                    self.profileImageView.loadImageWithCache(using: profilePicURL)
+                }
+            }
+        })
     }
     
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
@@ -141,10 +137,10 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     private func updateNewProfilePic() {
         //create unique image id for users
         let uniqueUserImage = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
+        let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).jpg")
         let databaseRef = Database.database().reference()
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        if let uploadData = UIImagePNGRepresentation(profileImageView.image!) {
+        if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.2) {
             storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
                     print(error!)
