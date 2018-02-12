@@ -55,12 +55,13 @@ class CreateMessageTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! CreateMessageCell
         let user = users[indexPath.row]
-        cell.textLabel?.text = user.name
-        cell.detailTextLabel?.text = user.email
-        cell.imageView?.image = UIImage(named: "anon")
-        cell.imageView?.contentMode = .scaleAspectFit
+        cell.updateCellUI()
+        cell.userNameLabel?.text = user.name
+        cell.contactLabel?.text = user.email
+        cell.profileImageView?.image = UIImage(named: "anon")
+        cell.profileImageView?.contentMode = .scaleAspectFit
         //download profile pic
         if let profilePicURL = user.profileImageUrl {
             let url = URL(string: profilePicURL)
@@ -70,7 +71,7 @@ class CreateMessageTableViewController: UITableViewController {
                     return
                 }
                 DispatchQueue.main.async {
-                    cell.imageView?.image = UIImage(data: data!)
+                    cell.profileImageView?.image = UIImage(data: data!)
                 }
             }).resume()
         }

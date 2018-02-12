@@ -22,7 +22,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        isUserLoggedIn()
+//        isUserLoggedIn()
     }
     
     // MARK: - Setup and Action
