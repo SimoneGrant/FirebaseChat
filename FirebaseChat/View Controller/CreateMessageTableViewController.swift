@@ -64,16 +64,17 @@ class CreateMessageTableViewController: UITableViewController {
         cell.profileImageView?.contentMode = .scaleAspectFit
         //download profile pic
         if let profilePicURL = user.profileImageUrl {
-            let url = URL(string: profilePicURL)
-            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                if error != nil {
-                    print(error!)
-                    return
-                }
-                DispatchQueue.main.async {
-                    cell.profileImageView?.image = UIImage(data: data!)
-                }
-            }).resume()
+//            let url = URL(string: profilePicURL)
+//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+//                if error != nil {
+//                    print(error!)
+//                    return
+//                }
+//                DispatchQueue.main.async {
+//                    cell.profileImageView?.image = UIImage(data: data!)
+//                }
+//            }).resume()
+            cell.profileImageView.loadImageWithCache(using: profilePicURL)
         }
         return cell
     }
