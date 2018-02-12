@@ -22,7 +22,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        isUserLoggedIn()
+        //        isUserLoggedIn()
     }
     
     // MARK: - Setup and Action
@@ -50,18 +50,8 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                     self.navigationItem.title = dict["name"] as? String
                     
                     if let profilePicURL = dict["profileImageUrl"] as? String {
-                        let url = URL(string: profilePicURL)
-                        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                            if error != nil {
-                                print(error!)
-                                return
-                            }
-                            DispatchQueue.main.async {
-                                self.profileImageView.image = UIImage(data: data!)
-                            }
-                        }).resume()
+                        self.profileImageView.loadImageWithCache(using: profilePicURL)
                     }
-                    
                 }
             })
         }
@@ -148,32 +138,32 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     // MARK: - Storage
     
-        private func updateNewProfilePic() {
-            //create unique image id for users
-            let uniqueUserImage = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
-            let databaseRef = Database.database().reference()
-            guard let userID = Auth.auth().currentUser?.uid else { return }
-            if let uploadData = UIImagePNGRepresentation(profileImageView.image!) {
-                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-//                    print(metadata)
-                    if let imageURL = metadata?.downloadURL()?.absoluteString {
-                        //save image here
-                        databaseRef.child("users").child(userID).child("profileImageUrl").setValue(imageURL, withCompletionBlock: { (error, ref) in
-                            if error != nil {
-                                print(error!)
-                                return
-                            }
-                            print("successful image upload")
-                        })
-                    }
-                })
-            }
+    private func updateNewProfilePic() {
+        //create unique image id for users
+        let uniqueUserImage = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
+        let databaseRef = Database.database().reference()
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        if let uploadData = UIImagePNGRepresentation(profileImageView.image!) {
+            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                //                    print(metadata)
+                if let imageURL = metadata?.downloadURL()?.absoluteString {
+                    //save image here
+                    databaseRef.child("users").child(userID).child("profileImageUrl").setValue(imageURL, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        print("successful image upload")
+                    })
+                }
+            })
         }
+    }
     
 }
 
