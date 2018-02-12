@@ -39,7 +39,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         }
     }
     
-    func isUserLoggedIn() {
+    private func isUserLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
             logOutUser()
         } else {
@@ -48,7 +48,20 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                 //                print(snapshot)
                 if let dict = snapshot.value as? [String: AnyObject] {
                     self.navigationItem.title = dict["name"] as? String
-                    //                    self.imageView.image = UIImage(named: dict["profileImageUrl"] as! String) ?? UIImage()
+                    
+                    if let profilePicURL = dict["profileImageUrl"] as? String {
+                        let url = URL(string: profilePicURL)
+                        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                            if error != nil {
+                                print(error!)
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                self.profileImageView.image = UIImage(data: data!)
+                            }
+                        }).resume()
+                    }
+                    
                 }
             })
         }
@@ -135,7 +148,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     // MARK: - Storage
     
-        func updateNewProfilePic() {
+        private func updateNewProfilePic() {
             //create unique image id for users
             let uniqueUserImage = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).png")
@@ -161,6 +174,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                 })
             }
         }
+    
 }
 
 extension MessagesTableViewController: UIImagePickerControllerDelegate {

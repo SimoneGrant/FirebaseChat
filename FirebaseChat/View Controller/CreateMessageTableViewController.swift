@@ -22,7 +22,7 @@ class CreateMessageTableViewController: UITableViewController {
     
     // MARK: - Setup
     
-    func setup() {
+    private func setup() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelTriggered))
     }
     
@@ -30,7 +30,7 @@ class CreateMessageTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func fetchUsersFromDatabase() {
+    private func fetchUsersFromDatabase() {
         Database.database().reference().child("users").observe(.childAdded) { (snapshot) in
 //            print(snapshot)
             if let dict = snapshot.value as? [String: AnyObject] {
@@ -59,9 +59,20 @@ class CreateMessageTableViewController: UITableViewController {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
-        if let profileImg = user.profileImageUrl {
-            print(profileImg)
-            cell.imageView?.image = UIImage(named: profileImg) //?? UIImage(named: "man")
+        cell.imageView?.image = UIImage(named: "anon")
+        cell.imageView?.contentMode = .scaleAspectFit
+        //download profile pic
+        if let profilePicURL = user.profileImageUrl {
+            let url = URL(string: profilePicURL)
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                DispatchQueue.main.async {
+                    cell.imageView?.image = UIImage(data: data!)
+                }
+            }).resume()
         }
         return cell
     }
