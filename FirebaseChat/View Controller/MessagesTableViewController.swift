@@ -17,7 +17,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+//        setupUI()
         isUserLoggedIn()
     }
     
@@ -44,13 +44,62 @@ class MessagesTableViewController: UITableViewController, UINavigationController
  Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             //                print(snapshot)
             if let dict = snapshot.value as? [String: AnyObject] {
-                self.navigationItem.title = dict["name"] as? String
-                
-                if let profilePicURL = dict["profileImageUrl"] as? String {
-                    self.profileImageView.loadImageWithCache(using: profilePicURL)
-                }
+                let user = User()
+                user.name = dict["name"] as? String
+                user.profileImageUrl = dict["profileImageUrl"] as? String
+                user.email = dict["email"] as? String
+                self.positionNavInfo(for: user)
             }
         })
+    }
+    
+    func positionNavInfo(for user: User) {
+        //create container view for custom navigation bar
+        let titleView = UIView()
+        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        titleView.addSubview(containerView)
+    
+        //image
+        let navImageView = UIImageView()
+        containerView.addSubview(navImageView)
+        if let navImageUrl = user.profileImageUrl {
+            navImageView.loadImageWithCache(using: navImageUrl)
+        }
+        navImageView.translatesAutoresizingMaskIntoConstraints = false
+        navImageView.contentMode = .scaleAspectFill
+        navImageView.layer.cornerRadius = 20
+        navImageView.clipsToBounds = true
+        //title
+        let nameLabel = UILabel()
+        containerView.addSubview(nameLabel)
+        nameLabel.text = user.name
+        nameLabel.font = UIFont(name: "Avenir-Heavy", size: 18)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        //constraints (anchors,width,height)
+        NSLayoutConstraint.activate ([
+            //image
+            navImageView.leftAnchor.constraint(equalTo: containerView.leftAnchor),
+            navImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            navImageView.widthAnchor.constraint(equalToConstant: 40),
+            navImageView.heightAnchor.constraint(equalToConstant: 40),
+            //title
+            nameLabel.leftAnchor.constraint(equalTo: navImageView.rightAnchor, constant: 8),
+            nameLabel.centerYAnchor.constraint(equalTo: navImageView.centerYAnchor),
+            nameLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor),
+            nameLabel.heightAnchor.constraint(equalTo: navImageView.heightAnchor),
+            //container
+            containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor),
+            containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor)
+            ])
+        
+//        navImageView.isUserInteractionEnabled = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(changeUserImageTriggered))
+//        navImageView.addGestureRecognizer(tap)
+        
+        self.navigationItem.titleView = titleView
     }
     
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
@@ -72,66 +121,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         present(imagePicker, animated: true, completion: nil)
     }
     
-    // MARK: - Nav Bar Image
-    //https://stackoverflow.com/questions/47062176/image-for-navigation-bar-with-large-title-ios-11
-    
-    private func setupUI() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
-        //        title = "Large Title"
-        
-        // Initial setup for image for Large NavBar state since the the screen always has Large NavBar once it gets opened
-        guard let navigationBar = self.navigationController?.navigationBar else { return }
-        navigationBar.addSubview(profileImageView)
-        profileImageView.layer.cornerRadius = Const.ImageSizeForLargeState / 2
-        profileImageView.clipsToBounds = true
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            profileImageView.rightAnchor.constraint(equalTo: navigationBar.rightAnchor,
-                                                    constant: -Const.ImageRightMargin),
-            profileImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor,
-                                                     constant: -Const.ImageBottomMarginForLargeState),
-            profileImageView.heightAnchor.constraint(equalToConstant: Const.ImageSizeForLargeState),
-            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor)
-            ])
-    }
-    
-    private func moveAndResizeImage(for height: CGFloat) {
-        let coeff: CGFloat = {
-            let delta = height - Const.NavBarHeightSmallState
-            let heightDifferenceBetweenStates = (Const.NavBarHeightLargeState - Const.NavBarHeightSmallState)
-            return delta / heightDifferenceBetweenStates
-        }()
-        
-        let factor = Const.ImageSizeForSmallState / Const.ImageSizeForLargeState
-        
-        let scale: CGFloat = {
-            let sizeAddendumFactor = coeff * (1.0 - factor)
-            return min(1.0, sizeAddendumFactor + factor)
-        }()
-        
-        // Value of difference between icons for large and small states
-        let sizeDiff = Const.ImageSizeForLargeState * (1.0 - factor) // 8.0
-        
-        let yTranslation: CGFloat = {
-            /// This value = 14. It equals to difference of 12 and 6 (bottom margin for large and small states). Also it adds 8.0 (size difference when the image gets smaller size)
-            let maxYTranslation = Const.ImageBottomMarginForLargeState - Const.ImageBottomMarginForSmallState + sizeDiff
-            return max(0, min(maxYTranslation, (maxYTranslation - coeff * (Const.ImageBottomMarginForSmallState + sizeDiff))))
-        }()
-        
-        let xTranslation = max(0, sizeDiff - coeff * sizeDiff)
-        
-        profileImageView.transform = CGAffineTransform.identity
-            .scaledBy(x: scale, y: scale)
-            .translatedBy(x: xTranslation, y: yTranslation)
-    }
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let height = navigationController?.navigationBar.frame.height else { return }
-        moveAndResizeImage(for: height)
-        
-    }
-    
     // MARK: - Storage
     
     private func updateNewProfilePic() {
@@ -140,7 +129,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueUserImage).jpg")
         let databaseRef = Database.database().reference()
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        if let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.2) {
+        if let image = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(image, 0.2) {
             storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
                     print(error!)
