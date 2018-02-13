@@ -335,7 +335,7 @@
         <scene sceneID="kuN-2l-AgI">
             <objects>
                 <tableViewController id="yRT-Kd-4St" customClass="MessagesTableViewController" customModule="FirebaseChat" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qOr-KT-QCU">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qOr-KT-QCU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -344,7 +344,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y6d-0u-6Bl" id="7f9-Dm-7yY">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -355,26 +355,34 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ufd-QR-LuZ">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="5TQ-v7-JXd">
-                            <connections>
-                                <action selector="logOutTriggered:" destination="yRT-Kd-4St" id="06s-bI-EVd"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="camera" id="FfJ-er-yc8">
+                        <leftBarButtonItems>
+                            <barButtonItem title="Logout" id="5TQ-v7-JXd">
                                 <connections>
-                                    <action selector="changeUserImageTriggered:" destination="yRT-Kd-4St" id="Zwr-zN-DTb"/>
+                                    <action selector="logOutTriggered:" destination="yRT-Kd-4St" id="06s-bI-EVd"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem systemItem="reply" id="JbJ-zn-bfE">
+                                <connections>
+                                    <action selector="getLog:" destination="yRT-Kd-4St" id="mb4-oL-Q0g"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
                             <barButtonItem systemItem="compose" id="R5P-uW-mIs">
                                 <connections>
                                     <action selector="createNewMessage:" destination="yRT-Kd-4St" id="INS-cY-Pjz"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="FfJ-er-yc8">
+                                <connections>
+                                    <action selector="changeUserImageTriggered:" destination="yRT-Kd-4St" id="Zwr-zN-DTb"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="pickerButton" destination="FfJ-er-yc8" id="b4K-CJ-A6q"/>
+                        <segue destination="HkK-kt-7BT" kind="show" identifier="getChatLog" id="PIO-0A-stu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gq8-5n-q6u" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -445,6 +453,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xOB-vc-unG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2818" y="70"/>
+        </scene>
+        <!--Message Log View Controller-->
+        <scene sceneID="mg0-aF-H4b">
+            <objects>
+                <viewController id="HkK-kt-7BT" customClass="MessageLogViewController" customModule="FirebaseChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eP9-5c-Het">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E5W-48-y1v">
+                                <rect key="frame" x="0.0" y="64" width="375" height="560"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="X8i-PS-2Al">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="SHO-Ku-1gV">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iek-bd-gEo">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCw-yS-Nl9">
+                                        <rect key="frame" x="323" y="9" width="44" height="32"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                        <state key="normal" title="SEND"/>
+                                    </button>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QFX-GV-53S">
+                                        <rect key="frame" x="8" y="10" width="307" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="QFX-GV-53S" firstAttribute="centerY" secondItem="iek-bd-gEo" secondAttribute="centerY" id="FyO-wk-kLz"/>
+                                    <constraint firstAttribute="trailing" secondItem="SCw-yS-Nl9" secondAttribute="trailing" constant="8" id="K0p-DA-icO"/>
+                                    <constraint firstAttribute="height" constant="50" id="V2p-9s-ac8"/>
+                                    <constraint firstItem="SCw-yS-Nl9" firstAttribute="leading" secondItem="QFX-GV-53S" secondAttribute="trailing" constant="8" id="c4x-KG-xVc"/>
+                                    <constraint firstItem="QFX-GV-53S" firstAttribute="leading" secondItem="iek-bd-gEo" secondAttribute="leading" constant="8" id="mZu-LG-rG2"/>
+                                    <constraint firstItem="SCw-yS-Nl9" firstAttribute="centerY" secondItem="iek-bd-gEo" secondAttribute="centerY" id="zNK-Ci-qcB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="E5W-48-y1v" firstAttribute="top" secondItem="8lm-4v-FFA" secondAttribute="top" id="3T6-kh-s86"/>
+                            <constraint firstAttribute="bottom" secondItem="iek-bd-gEo" secondAttribute="bottom" id="49h-NL-sbC"/>
+                            <constraint firstItem="E5W-48-y1v" firstAttribute="trailing" secondItem="8lm-4v-FFA" secondAttribute="trailing" id="DnK-dH-SXk"/>
+                            <constraint firstItem="iek-bd-gEo" firstAttribute="top" secondItem="E5W-48-y1v" secondAttribute="bottom" constant="-7" id="EjG-Ha-jCg"/>
+                            <constraint firstItem="E5W-48-y1v" firstAttribute="leading" secondItem="8lm-4v-FFA" secondAttribute="leading" id="GEk-Q5-9L9"/>
+                            <constraint firstItem="E5W-48-y1v" firstAttribute="trailing" secondItem="iek-bd-gEo" secondAttribute="trailing" id="PmN-vU-9NP"/>
+                            <constraint firstItem="iek-bd-gEo" firstAttribute="leading" secondItem="8lm-4v-FFA" secondAttribute="leading" id="p2E-c9-QN4"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="8lm-4v-FFA"/>
+                    </view>
+                    <connections>
+                        <outlet property="chatCollectionView" destination="E5W-48-y1v" id="d1T-2m-4db"/>
+                        <outlet property="containerView" destination="iek-bd-gEo" id="869-75-Mtu"/>
+                        <outlet property="sendButton" destination="SCw-yS-Nl9" id="dg7-F9-jT3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bnM-O4-bnD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3589.5999999999999" y="84.107946026986511"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1NV-5h-PH1">

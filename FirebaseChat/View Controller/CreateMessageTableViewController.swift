@@ -60,7 +60,7 @@ class CreateMessageTableViewController: UITableViewController {
         cell.updateCellUI()
         cell.userNameLabel?.text = user.name
         cell.contactLabel?.text = user.email
-        cell.profileImageView?.image = UIImage(named: "anon")
+//        cell.profileImageView?.image = UIImage(named: "anon")
         cell.profileImageView?.contentMode = .scaleAspectFit
         //download profile pic
         if let profilePicURL = user.profileImageUrl {

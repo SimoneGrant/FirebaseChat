@@ -96,10 +96,21 @@ class MessagesTableViewController: UITableViewController, UINavigationController
             ])
         
 //        navImageView.isUserInteractionEnabled = true
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(changeUserImageTriggered))
-//        navImageView.addGestureRecognizer(tap)
+        titleView.isUserInteractionEnabled = true
+//        navImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(triggerPicker)))
+        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getChatLog)))
         
+    
         self.navigationItem.titleView = titleView
+    }
+    
+    @objc func getChatLog() {
+        let chatLog = MessageLogViewController()
+        navigationController?.pushViewController(chatLog, animated: true)
+    }
+    
+    @IBAction func getLog(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "getChatLog", sender: self)
     }
     
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
@@ -119,6 +130,14 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc func triggerPicker() {
+        print("tapped")
+//        let imagePicker = UIImagePickerController()
+//        imagePicker.delegate = self
+//        imagePicker.allowsEditing = true
+//        present(imagePicker, animated: true, completion: nil)
     }
     
     // MARK: - Storage
