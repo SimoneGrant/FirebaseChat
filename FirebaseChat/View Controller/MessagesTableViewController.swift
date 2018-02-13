@@ -94,23 +94,25 @@ class MessagesTableViewController: UITableViewController, UINavigationController
             containerView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor),
             containerView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor)
             ])
-        
-//        navImageView.isUserInteractionEnabled = true
-        titleView.isUserInteractionEnabled = true
-//        navImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(triggerPicker)))
-        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(getChatLog)))
-        
-    
+
         self.navigationItem.titleView = titleView
     }
     
-    @objc func getChatLog() {
-        let chatLog = MessageLogViewController()
-        navigationController?.pushViewController(chatLog, animated: true)
+    var capturedUser: User?
+    func showChatControllerForUser(_ user: User) {
+        capturedUser = user
+        self.performSegue(withIdentifier: "goToChatLog", sender: self)
+    }
+
+    func getMessageLog() {
+        self.performSegue(withIdentifier: "goToChatLog", sender: self)
     }
     
-    @IBAction func getLog(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "getChatLog", sender: self)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToChatLog" {
+            let destinationVC = segue.destination as! MessageLogViewController
+            destinationVC.user = capturedUser
+        }
     }
     
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
@@ -121,6 +123,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Create") as! FetchUsersTableViewController
+        vc.messagesController = self
         let navVC = UINavigationController(rootViewController: vc)
         self.present(navVC, animated: true, completion: nil)
     }
@@ -130,14 +133,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @objc func triggerPicker() {
-        print("tapped")
-//        let imagePicker = UIImagePickerController()
-//        imagePicker.delegate = self
-//        imagePicker.allowsEditing = true
-//        present(imagePicker, animated: true, completion: nil)
     }
     
     // MARK: - Storage

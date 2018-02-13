@@ -11,6 +11,12 @@ import Firebase
 
 class MessageLogViewController: UIViewController {
     
+    var user: User? {
+        didSet {
+            navigationItem.title = user?.name
+        }
+    }
+    
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
@@ -20,12 +26,12 @@ class MessageLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        print(user?.name)
     }
     
     // MARK: - Setup
     
     func setup() {
-        navigationItem.title = "Chat Log"
         messageTextField.delegate = self
         addSeparatorToView()
     }

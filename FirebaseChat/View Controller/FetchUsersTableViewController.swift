@@ -71,11 +71,15 @@ class FetchUsersTableViewController: UITableViewController {
     }
     
     // MARK: - Table view delegate methods
-    
-     func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    var messagesController: MessagesTableViewController?
+     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
-            print("dismiss completed")
+            let user = self.users[indexPath.row]
+            print(user)
+            self.messagesController?.showChatControllerForUser(user)
         }
     }
+    
+    
 
 }
