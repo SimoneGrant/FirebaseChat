@@ -486,9 +486,12 @@
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCw-yS-Nl9">
-                                        <rect key="frame" x="323" y="9" width="44" height="32"/>
+                                        <rect key="frame" x="323" y="10" width="44" height="32"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <state key="normal" title="SEND"/>
+                                        <connections>
+                                            <action selector="sendButtonPressed:" destination="HkK-kt-7BT" eventType="touchUpInside" id="SKn-hH-N4O"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QFX-GV-53S">
                                         <rect key="frame" x="8" y="10" width="307" height="30"/>
@@ -499,12 +502,12 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="QFX-GV-53S" firstAttribute="centerY" secondItem="iek-bd-gEo" secondAttribute="centerY" id="FyO-wk-kLz"/>
+                                    <constraint firstItem="QFX-GV-53S" firstAttribute="top" secondItem="iek-bd-gEo" secondAttribute="top" constant="10" id="9r4-Sw-OjB"/>
                                     <constraint firstAttribute="trailing" secondItem="SCw-yS-Nl9" secondAttribute="trailing" constant="8" id="K0p-DA-icO"/>
+                                    <constraint firstItem="SCw-yS-Nl9" firstAttribute="top" secondItem="iek-bd-gEo" secondAttribute="top" constant="10" id="MBG-1p-3nI"/>
                                     <constraint firstAttribute="height" constant="50" id="V2p-9s-ac8"/>
                                     <constraint firstItem="SCw-yS-Nl9" firstAttribute="leading" secondItem="QFX-GV-53S" secondAttribute="trailing" constant="8" id="c4x-KG-xVc"/>
                                     <constraint firstItem="QFX-GV-53S" firstAttribute="leading" secondItem="iek-bd-gEo" secondAttribute="leading" constant="8" id="mZu-LG-rG2"/>
-                                    <constraint firstItem="SCw-yS-Nl9" firstAttribute="centerY" secondItem="iek-bd-gEo" secondAttribute="centerY" id="zNK-Ci-qcB"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -523,6 +526,8 @@
                     <connections>
                         <outlet property="chatCollectionView" destination="E5W-48-y1v" id="d1T-2m-4db"/>
                         <outlet property="containerView" destination="iek-bd-gEo" id="869-75-Mtu"/>
+                        <outlet property="heightConstraint" destination="V2p-9s-ac8" id="0Zt-fS-oTc"/>
+                        <outlet property="messageTextField" destination="QFX-GV-53S" id="trJ-lb-c3Y"/>
                         <outlet property="sendButton" destination="SCw-yS-Nl9" id="dg7-F9-jT3"/>
                     </connections>
                 </viewController>

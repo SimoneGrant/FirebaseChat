@@ -22,6 +22,7 @@
 		185F028D202F9481006456EE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F028C202F9481006456EE /* Message.swift */; };
 		185F0293202FB724006456EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 185F0292202FB724006456EE /* GoogleService-Info.plist */; };
 		1887A8C42032255900C7A061 /* MessageLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1887A8C32032255900C7A061 /* MessageLogViewController.swift */; };
+		1887A8C62032A0EC00C7A061 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1887A8C52032A0EC00C7A061 /* Message.swift */; };
 		55D6DF19DEDF9141CE7C2F6B /* Pods_FirebaseChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A3923CE9786DECA41BB8E /* Pods_FirebaseChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		185F028C202F9481006456EE /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		185F0292202FB724006456EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1887A8C32032255900C7A061 /* MessageLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLogViewController.swift; sourceTree = "<group>"; };
+		1887A8C52032A0EC00C7A061 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		4B9A3923CE9786DECA41BB8E /* Pods_FirebaseChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F4AF896700CDA9D9819E898 /* Pods-FirebaseChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseChat/Pods-FirebaseChat.release.xcconfig"; sourceTree = "<group>"; };
 		A20B73657D9CBE7D98D1A607 /* Pods-FirebaseChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseChat/Pods-FirebaseChat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			children = (
 				18303CE4202FF53800C9932A /* User.swift */,
 				18303CE620300FCA00C9932A /* ProfileImage.swift */,
+				1887A8C52032A0EC00C7A061 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				18585D3D20313FCF00FACE6B /* Extensions.swift in Sources */,
 				185F0278202F69D8006456EE /* LoginViewController.swift in Sources */,
 				18303CE0202FE21D00C9932A /* MessagesTableViewController.swift in Sources */,
+				1887A8C62032A0EC00C7A061 /* Message.swift in Sources */,
 				185F0276202F69D8006456EE /* AppDelegate.swift in Sources */,
 				18303CE5202FF53800C9932A /* User.swift in Sources */,
 			);
