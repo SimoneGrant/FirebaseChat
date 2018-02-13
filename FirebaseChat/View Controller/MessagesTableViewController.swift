@@ -120,7 +120,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     }
     
     @IBAction func createNewMessage(_ sender: UIBarButtonItem) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Create") as! CreateMessageTableViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "Create") as! FetchUsersTableViewController
         let navVC = UINavigationController(rootViewController: vc)
         self.present(navVC, animated: true, completion: nil)
     }

@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class CreateMessageTableViewController: UITableViewController {
+class FetchUsersTableViewController: UITableViewController {
     
     var users = [User]()
 
@@ -55,7 +55,7 @@ class CreateMessageTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! CreateMessageCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! FetchUsersCell
         let user = users[indexPath.row]
         cell.updateCellUI()
         cell.userNameLabel?.text = user.name
@@ -68,6 +68,14 @@ class CreateMessageTableViewController: UITableViewController {
             cell.profileImageView.loadImageWithCache(using: profilePicURL)
         }
         return cell
+    }
+    
+    // MARK: - Table view delegate methods
+    
+     func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        dismiss(animated: true) {
+            print("dismiss completed")
+        }
     }
 
 }

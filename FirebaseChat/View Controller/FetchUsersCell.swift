@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateMessageCell: UITableViewCell {
+class FetchUsersCell: UITableViewCell {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
