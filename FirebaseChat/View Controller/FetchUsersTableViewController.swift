@@ -12,6 +12,7 @@ import Firebase
 class FetchUsersTableViewController: UITableViewController {
     
     var users = [User]()
+    var reuseID = "CustomCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,10 @@ class FetchUsersTableViewController: UITableViewController {
     
     private func setup() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelTriggered))
+        let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: reuseID)
+        tableView.rowHeight = 80.0
+        tableView.separatorStyle = .none
     }
     
     @objc func cancelTriggered() {
@@ -35,6 +40,7 @@ class FetchUsersTableViewController: UITableViewController {
 //            print(snapshot)
             if let dict = snapshot.value as? [String: AnyObject] {
                 let user = User()
+                user.id = snapshot.key //set the user id to firebase snapshot key
                 user.email = dict["email"] as? String
                 user.name = dict["name"] as? String
                 user.profileImageUrl = dict["profileImageUrl"] as? String
@@ -50,23 +56,37 @@ class FetchUsersTableViewController: UITableViewController {
     
     // MARK: - Table view data souce
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! FetchUsersCell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! FetchUsersCell
+//        let user = users[indexPath.row]
+//        cell.updateCellUI()
+//        cell.userNameLabel?.text = user.name
+//        cell.contactLabel?.text = user.email
+//        cell.profileImageView?.contentMode = .scaleAspectFit
+//        //download profile pic
+//        if let profilePicURL = user.profileImageUrl {
+//
+//            cell.profileImageView.loadImageWithCache(using: profilePicURL)
+//        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CustomTableViewCell
         let user = users[indexPath.row]
         cell.updateCellUI()
         cell.userNameLabel?.text = user.name
-        cell.contactLabel?.text = user.email
-//        cell.profileImageView?.image = UIImage(named: "anon")
-        cell.profileImageView?.contentMode = .scaleAspectFit
-        //download profile pic
+        cell.userDetailLabel?.text = user.email
+        cell.userImageView?.contentMode = .scaleAspectFit
         if let profilePicURL = user.profileImageUrl {
-
-            cell.profileImageView.loadImageWithCache(using: profilePicURL)
+            cell.userImageView.loadImageWithCache(using: profilePicURL)
         }
+        
         return cell
     }
     

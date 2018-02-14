@@ -26,7 +26,6 @@ class MessageLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
-        print(user?.name)
     }
     
     // MARK: - Setup
@@ -59,7 +58,10 @@ class MessageLogViewController: UIViewController {
         sendButton.isEnabled = false
         let messageRef = Database.database().reference().child("messages")
         let childRef = messageRef.childByAutoId()
-        let values = ["Sender": Auth.auth().currentUser?.email, "MessageBody": messageTextField.text!, "Name": ""]
+        let toID = user!.id!
+        let fromID = Auth.auth().currentUser!.uid
+        let timestamp = Int(Date().timeIntervalSince1970)
+        let values: [String:Any] = ["messageBody": messageTextField.text!, "toID": toID, "fromID": fromID, "timestamp": timestamp] 
         childRef.setValue(values) {
             (error, reference) in
             if error != nil {

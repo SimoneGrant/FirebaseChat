@@ -14,11 +14,74 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     @IBOutlet weak var pickerButton: UIBarButtonItem!
     let profileImageView = UIImageView()
+    let reuseID = "CustomCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupUI()
         isUserLoggedIn()
+        observeMessages()
+        setupView()
+    }
+    
+    func setupView() {
+        let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: reuseID)
+        tableView.rowHeight = 80.0
+        tableView.separatorStyle = .none
+    }
+    
+    //view messages that are in database
+    var messages = [Message]()
+    func observeMessages() {
+        let ref = Database.database().reference().child("messages")
+        ref.observe(.childAdded, with: { (snapshot) in
+            if let dict = snapshot.value as? [String: AnyObject] {
+            let message = Message()
+                message.fromID = dict["fromID"] as? String
+                message.messageBody = dict["messageBody"] as? String
+                message.timestamp = dict["timestamp"] as? NSNumber
+                message.toID = dict["toID"] as? String
+                self.messages.append(message)
+            }
+            //call on main queue
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    // MARK: - Table view data source
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CustomTableViewCell
+        let msg = messages[indexPath.row]
+        
+        if let toID = msg.toID {
+            let ref = Database.database().reference().child("users").child(toID)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                //get username in database connected to the ID
+                if let dict = snapshot.value as? [String:AnyObject] {
+                    cell.userNameLabel?.text = dict["name"] as? String
+                }
+                print(snapshot)
+            })
+        }
+        
+//        cell.userNameLabel?.text = msg.toID
+//        cell.userDetailLabel?.text = msg.messageBody
+//        if let profilePicURL = msg.profileImageUrl {
+//            cell.userImageView.loadImageWithCache(using: profilePicURL)
+//        }
+        
+        return cell
     }
     
     // MARK: - Setup and Action
@@ -98,23 +161,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         self.navigationItem.titleView = titleView
     }
     
-    var capturedUser: User?
-    func showChatControllerForUser(_ user: User) {
-        capturedUser = user
-        self.performSegue(withIdentifier: "goToChatLog", sender: self)
-    }
-
-    func getMessageLog() {
-        self.performSegue(withIdentifier: "goToChatLog", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToChatLog" {
-            let destinationVC = segue.destination as! MessageLogViewController
-            destinationVC.user = capturedUser
-        }
-    }
-    
     @IBAction func logOutTriggered(_ sender: UIBarButtonItem) {
         logOutUser()
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "Login") as! LoginViewController
@@ -133,6 +179,21 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
+    }
+    
+    // Send Data
+    
+    var capturedUser: User?
+    func showChatControllerForUser(_ user: User) {
+        capturedUser = user
+        self.performSegue(withIdentifier: "goToChatLog", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToChatLog" {
+            let destinationVC = segue.destination as! MessageLogViewController
+            destinationVC.user = capturedUser
+        }
     }
     
     // MARK: - Storage

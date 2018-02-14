@@ -11,15 +11,16 @@
 		18303CE2202FEF9100C9932A /* FetchUsersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE1202FEF9100C9932A /* FetchUsersTableViewController.swift */; };
 		18303CE5202FF53800C9932A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE4202FF53800C9932A /* User.swift */; };
 		18303CE720300FCA00C9932A /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18303CE620300FCA00C9932A /* ProfileImage.swift */; };
-		18585D3A20312CD000FACE6B /* FetchUsersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18585D3920312CD000FACE6B /* FetchUsersCell.swift */; };
 		18585D3D20313FCF00FACE6B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18585D3C20313FCF00FACE6B /* Extensions.swift */; };
+		1858AF4F203366700069F67F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858AF4E203366700069F67F /* Message.swift */; };
+		1858AF522033BFCF0069F67F /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */; };
+		1858AF532033BFCF0069F67F /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1858AF512033BFCF0069F67F /* CustomTableViewCell.xib */; };
 		185F0276202F69D8006456EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0275202F69D8006456EE /* AppDelegate.swift */; };
 		185F0278202F69D8006456EE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0277202F69D8006456EE /* LoginViewController.swift */; };
 		185F027B202F69D8006456EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F0279202F69D8006456EE /* Main.storyboard */; };
 		185F027D202F69D8006456EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 185F027C202F69D8006456EE /* Assets.xcassets */; };
 		185F0280202F69D8006456EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F027E202F69D8006456EE /* LaunchScreen.storyboard */; };
 		185F028B202F9057006456EE /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F028A202F9057006456EE /* SignUpViewController.swift */; };
-		185F028D202F9481006456EE /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F028C202F9481006456EE /* Message.swift */; };
 		185F0293202FB724006456EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 185F0292202FB724006456EE /* GoogleService-Info.plist */; };
 		1887A8C42032255900C7A061 /* MessageLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1887A8C32032255900C7A061 /* MessageLogViewController.swift */; };
 		55D6DF19DEDF9141CE7C2F6B /* Pods_FirebaseChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A3923CE9786DECA41BB8E /* Pods_FirebaseChat.framework */; };
@@ -30,8 +31,10 @@
 		18303CE1202FEF9100C9932A /* FetchUsersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUsersTableViewController.swift; sourceTree = "<group>"; };
 		18303CE4202FF53800C9932A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		18303CE620300FCA00C9932A /* ProfileImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImage.swift; sourceTree = "<group>"; };
-		18585D3920312CD000FACE6B /* FetchUsersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUsersCell.swift; sourceTree = "<group>"; };
 		18585D3C20313FCF00FACE6B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1858AF4E203366700069F67F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		1858AF512033BFCF0069F67F /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		185F0272202F69D8006456EE /* FirebaseChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		185F0275202F69D8006456EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		185F0277202F69D8006456EE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -40,7 +43,6 @@
 		185F027F202F69D8006456EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		185F0281202F69D8006456EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		185F028A202F9057006456EE /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		185F028C202F9481006456EE /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		185F0292202FB724006456EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1887A8C32032255900C7A061 /* MessageLogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLogViewController.swift; sourceTree = "<group>"; };
 		4B9A3923CE9786DECA41BB8E /* Pods_FirebaseChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				18303CE4202FF53800C9932A /* User.swift */,
+				1858AF4E203366700069F67F /* Message.swift */,
 				18303CE620300FCA00C9932A /* ProfileImage.swift */,
 			);
 			path = Model;
@@ -105,7 +108,6 @@
 				185F0289202F6A0B006456EE /* Supporting Files */,
 				185F0281202F69D8006456EE /* Info.plist */,
 				185F0292202FB724006456EE /* GoogleService-Info.plist */,
-				185F028C202F9481006456EE /* Message.swift */,
 			);
 			path = FirebaseChat;
 			sourceTree = "<group>";
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				185F0279202F69D8006456EE /* Main.storyboard */,
+				1858AF512033BFCF0069F67F /* CustomTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,8 +128,8 @@
 				185F028A202F9057006456EE /* SignUpViewController.swift */,
 				18303CDF202FE21D00C9932A /* MessagesTableViewController.swift */,
 				18303CE1202FEF9100C9932A /* FetchUsersTableViewController.swift */,
-				18585D3920312CD000FACE6B /* FetchUsersCell.swift */,
 				1887A8C32032255900C7A061 /* MessageLogViewController.swift */,
+				1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */,
 			);
 			path = "View Controller";
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				185F0293202FB724006456EE /* GoogleService-Info.plist in Resources */,
 				185F0280202F69D8006456EE /* LaunchScreen.storyboard in Resources */,
 				185F027D202F69D8006456EE /* Assets.xcassets in Resources */,
+				1858AF532033BFCF0069F67F /* CustomTableViewCell.xib in Resources */,
 				185F027B202F69D8006456EE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,14 +301,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				185F028B202F9057006456EE /* SignUpViewController.swift in Sources */,
-				18585D3A20312CD000FACE6B /* FetchUsersCell.swift in Sources */,
 				18303CE720300FCA00C9932A /* ProfileImage.swift in Sources */,
 				1887A8C42032255900C7A061 /* MessageLogViewController.swift in Sources */,
 				18303CE2202FEF9100C9932A /* FetchUsersTableViewController.swift in Sources */,
-				185F028D202F9481006456EE /* Message.swift in Sources */,
 				18585D3D20313FCF00FACE6B /* Extensions.swift in Sources */,
+				1858AF522033BFCF0069F67F /* CustomTableViewCell.swift in Sources */,
 				185F0278202F69D8006456EE /* LoginViewController.swift in Sources */,
 				18303CE0202FE21D00C9932A /* MessagesTableViewController.swift in Sources */,
+				1858AF4F203366700069F67F /* Message.swift in Sources */,
 				185F0276202F69D8006456EE /* AppDelegate.swift in Sources */,
 				18303CE5202FF53800C9932A /* User.swift in Sources */,
 			);

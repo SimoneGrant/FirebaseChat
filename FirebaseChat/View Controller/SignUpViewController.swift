@@ -68,7 +68,7 @@ class SignUpViewController: UIViewController {
     
     //UPLOAD USER INFO
     private func registerUserInfo(with uid: String, values: [String: AnyObject]) {
-        let ref = Database.database().reference(fromURL: "https://fir-chat-912af.firebaseio.com/")
+        let ref = Database.database().reference()
         let userRef = ref.child("users").child(uid)
         userRef.updateChildValues(values, withCompletionBlock: { (error, ref) in
             if error != nil {
