@@ -19,8 +19,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
         isUserLoggedIn()
-//        observeMessages()
-        
         setupView()
     }
     
@@ -46,7 +44,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                     message.messageBody = dict["messageBody"] as? String
                     message.timestamp = dict["timestamp"] as? NSNumber
                     message.toID = dict["toID"] as? String
-                    //                self.messages.append(message)
                     //get the message and sender grouped together
                     if let toID = message.toID {
                         self.messageDict[toID] = message
@@ -78,7 +75,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                 message.messageBody = dict["messageBody"] as? String
                 message.timestamp = dict["timestamp"] as? NSNumber
                 message.toID = dict["toID"] as? String
-//                self.messages.append(message)
                 //get the message and sender grouped together
                 if let toID = message.toID {
                     self.messageDict[toID] = message
@@ -133,7 +129,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = messages[indexPath.row]
-        print(message.messageBody, message.toID, message.fromID)
+//        print(message.messageBody, message.toID, message.fromID)
         guard let senderID = message.senderID() else { return }
         let ref = Database.database().reference().child("users").child(senderID)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -173,7 +169,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         observeUserMessages()
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
- Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             //                print(snapshot)
             if let dict = snapshot.value as? [String: AnyObject] {
                 let user = User()
@@ -186,7 +182,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     }
     
     func positionNavInfo(for user: User) {
-        //create container view for custom navigation bar
+        //create container view custom navigation bar
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
         let containerView = UIView()
@@ -243,13 +239,6 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         self.present(navVC, animated: true, completion: nil)
     }
     
-    @IBAction func changeUserImageTriggered(_ sender: UIBarButtonItem) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
     // Send Data
     
     var capturedUser: User?
@@ -294,6 +283,15 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         }
     }
     
+    // MARK: - Image picker controller
+    
+    @IBAction func changeUserImageTriggered(_ sender: UIBarButtonItem) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
 }
 
 extension MessagesTableViewController: UIImagePickerControllerDelegate {
@@ -313,9 +311,7 @@ extension MessagesTableViewController: UIImagePickerControllerDelegate {
         }
         
         if let image = userSelectedImage {
-            //navigationImageView.image = image
             profileImageView.image = image
-            
         }
         updateNewProfilePic()
         self.dismiss(animated: true, completion: nil)

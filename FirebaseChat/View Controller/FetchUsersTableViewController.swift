@@ -16,7 +16,6 @@ class FetchUsersTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setup()
         fetchUsersFromDatabase()
     }
@@ -80,6 +79,7 @@ class FetchUsersTableViewController: UITableViewController {
     }
     
     // MARK: - Table view delegate methods
+    
     var messagesController: MessagesTableViewController?
      override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
@@ -88,7 +88,4 @@ class FetchUsersTableViewController: UITableViewController {
             self.messagesController?.showChatControllerForUser(user)
         }
     }
-    
-    
-
 }

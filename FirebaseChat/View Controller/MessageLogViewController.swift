@@ -35,7 +35,6 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
     
     func setup() {
         messageTextField.delegate = self
-        addSeparatorToView()
         //collection view
         chatCollectionView.delegate = self
         chatCollectionView.dataSource = self
@@ -49,21 +48,6 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: view.frame.width, height: 80)
         chatCollectionView.collectionViewLayout = layout
-    }
-    
-    //add a little flourish
-    func addSeparatorToView() {
-        let separator = UIView()
-        containerView.addSubview(separator)
-        separator.backgroundColor = UIColor.lightGray
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        //constrants
-        NSLayoutConstraint.activate ([
-            separator.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-            separator.topAnchor.constraint(equalTo: containerView.topAnchor),
-            separator.widthAnchor.constraint(equalTo: containerView.widthAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 0.7)
-            ])
     }
     
     // MARK: - Action
@@ -95,17 +79,6 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             self.messageTextField.isEnabled = true
             self.sendButton.isEnabled = true
             self.messageTextField.text = ""
-        }
-    }
-    
-    func retrieveMessageFromDatabase() {
-        let messageRef = Database.database().reference().child("Messages")
-        messageRef.observe(.childAdded) { (snapshot) in
-            let snapshotValue = snapshot.value as! [String: String]
-//            let text = snapshotValue["MessageBody"]!
-//            let sender = snapshotValue["Sender"]!
-            
-            
         }
     }
     
@@ -148,11 +121,9 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         return cell
     }
     
-    // MARK: - Collection view delegate methods
-    
-
-    
 }
+
+// MARK: - Text field delegate
 
 extension MessageLogViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
