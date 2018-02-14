@@ -14,8 +14,10 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
     var user: User? {
         didSet {
             navigationItem.title = user?.name
+            observeMessages()
         }
     }
+    var messages = [Message]()
     
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
@@ -38,13 +40,14 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         chatCollectionView.delegate = self
         chatCollectionView.dataSource = self
         chatCollectionView?.backgroundColor = UIColor.white
-        chatCollectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        chatCollectionView?.alwaysBounceVertical = true
+        chatCollectionView?.register(MessageLogCell.self, forCellWithReuseIdentifier: cellID)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: view.frame.height, height: 80)
+        layout.itemSize = CGSize(width: view.frame.width, height: 80)
         chatCollectionView.collectionViewLayout = layout
     }
     
@@ -106,23 +109,48 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         }
     }
     
+    func observeMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let userMsgRef = Database.database().reference().child("user-messages").child(uid)
+        userMsgRef.observe(.childAdded, with: { (snapshot) in
+            let messageID = snapshot.key
+            let msgRef = Database.database().reference().child("messages").child(messageID)
+            msgRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                print(snapshot)
+                guard let dict = snapshot.value as? [String:AnyObject] else { return }
+                let message = Message()
+                message.fromID = dict["fromID"] as? String
+                message.messageBody = dict["messageBody"] as? String
+                message.timestamp = dict["timestamp"] as? NSNumber
+                message.toID = dict["toID"] as? String
+                
+                if message.senderID() == self.user?.id {
+                    self.messages.append(message)
+                    DispatchQueue.main.async {
+                        self.chatCollectionView.reloadData()
+                    }
+                }
+            })
+            
+        })
+    }
+    
     // MARK: - Collection view data source
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return messages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
-        cell.backgroundColor = UIColor.blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! MessageLogCell
+        let msg = messages[indexPath.item]
+        cell.textView.text = msg.messageBody
         return cell
     }
     
     // MARK: - Collection view delegate methods
     
-//    func collectionView(_ collectionView: UICollectionView, layoutCollectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: view.frame.height, height: 80)
-//    }
+
     
 }
 

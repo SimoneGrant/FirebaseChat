@@ -15,6 +15,7 @@
 		1858AF4F203366700069F67F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858AF4E203366700069F67F /* Message.swift */; };
 		1858AF522033BFCF0069F67F /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */; };
 		1858AF532033BFCF0069F67F /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1858AF512033BFCF0069F67F /* CustomTableViewCell.xib */; };
+		1858AF552034C8D90069F67F /* MessageLogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1858AF542034C8D90069F67F /* MessageLogCell.swift */; };
 		185F0276202F69D8006456EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0275202F69D8006456EE /* AppDelegate.swift */; };
 		185F0278202F69D8006456EE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F0277202F69D8006456EE /* LoginViewController.swift */; };
 		185F027B202F69D8006456EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185F0279202F69D8006456EE /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 		1858AF4E203366700069F67F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		1858AF512033BFCF0069F67F /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
+		1858AF542034C8D90069F67F /* MessageLogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLogCell.swift; sourceTree = "<group>"; };
 		185F0272202F69D8006456EE /* FirebaseChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		185F0275202F69D8006456EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		185F0277202F69D8006456EE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				1858AF4E203366700069F67F /* Message.swift */,
 				18303CE620300FCA00C9932A /* ProfileImage.swift */,
 				1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */,
+				1858AF542034C8D90069F67F /* MessageLogCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			files = (
 				185F028B202F9057006456EE /* SignUpViewController.swift in Sources */,
 				18303CE720300FCA00C9932A /* ProfileImage.swift in Sources */,
+				1858AF552034C8D90069F67F /* MessageLogCell.swift in Sources */,
 				1887A8C42032255900C7A061 /* MessageLogViewController.swift in Sources */,
 				18303CE2202FEF9100C9932A /* FetchUsersTableViewController.swift in Sources */,
 				18585D3D20313FCF00FACE6B /* Extensions.swift in Sources */,
