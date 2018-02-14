@@ -27,11 +27,11 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: reuseID)
         tableView.rowHeight = 80.0
-        tableView.separatorStyle = .none
     }
     
     //view messages that are in database
     var messages = [Message]()
+    var messageDict = [String:Message]()
     func observeMessages() {
         let ref = Database.database().reference().child("messages")
         ref.observe(.childAdded, with: { (snapshot) in
@@ -41,7 +41,16 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                 message.messageBody = dict["messageBody"] as? String
                 message.timestamp = dict["timestamp"] as? NSNumber
                 message.toID = dict["toID"] as? String
-                self.messages.append(message)
+//                self.messages.append(message)
+                //get the message and sender grouped together
+                if let toID = message.toID {
+                    self.messageDict[toID] = message
+                    //set the sender and message values for the tableview
+                    self.messages = Array(self.messageDict.values)
+                    self.messages.sort(by: { (message1, message2) -> Bool in
+                        return message1.timestamp!.intValue > message2.timestamp!.intValue
+                    })
+                }
             }
             //call on main queue
             DispatchQueue.main.async {
@@ -62,24 +71,9 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CustomTableViewCell
+        cell.updateCellUI()
         let msg = messages[indexPath.row]
-        
-        if let toID = msg.toID {
-            let ref = Database.database().reference().child("users").child(toID)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                //get username in database connected to the ID
-                if let dict = snapshot.value as? [String:AnyObject] {
-                    cell.userNameLabel?.text = dict["name"] as? String
-                }
-                print(snapshot)
-            })
-        }
-        
-//        cell.userNameLabel?.text = msg.toID
-//        cell.userDetailLabel?.text = msg.messageBody
-//        if let profilePicURL = msg.profileImageUrl {
-//            cell.userImageView.loadImageWithCache(using: profilePicURL)
-//        }
+        cell.msg = msg
         
         return cell
     }

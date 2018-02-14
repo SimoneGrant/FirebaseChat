@@ -64,25 +64,14 @@ class FetchUsersTableViewController: UITableViewController {
         return users.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath) as! FetchUsersCell
-//        let user = users[indexPath.row]
-//        cell.updateCellUI()
-//        cell.userNameLabel?.text = user.name
-//        cell.contactLabel?.text = user.email
-//        cell.profileImageView?.contentMode = .scaleAspectFit
-//        //download profile pic
-//        if let profilePicURL = user.profileImageUrl {
-//
-//            cell.profileImageView.loadImageWithCache(using: profilePicURL)
-//        }
-        
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CustomTableViewCell
         let user = users[indexPath.row]
         cell.updateCellUI()
         cell.userNameLabel?.text = user.name
         cell.userDetailLabel?.text = user.email
         cell.userImageView?.contentMode = .scaleAspectFit
+        cell.timeLabel.isHidden = true
         if let profilePicURL = user.profileImageUrl {
             cell.userImageView.loadImageWithCache(using: profilePicURL)
         }

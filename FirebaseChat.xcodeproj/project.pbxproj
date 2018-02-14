@@ -68,6 +68,7 @@
 				18303CE4202FF53800C9932A /* User.swift */,
 				1858AF4E203366700069F67F /* Message.swift */,
 				18303CE620300FCA00C9932A /* ProfileImage.swift */,
+				1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -129,7 +130,6 @@
 				18303CDF202FE21D00C9932A /* MessagesTableViewController.swift */,
 				18303CE1202FEF9100C9932A /* FetchUsersTableViewController.swift */,
 				1887A8C32032255900C7A061 /* MessageLogViewController.swift */,
-				1858AF502033BFCF0069F67F /* CustomTableViewCell.swift */,
 			);
 			path = "View Controller";
 			sourceTree = "<group>";
