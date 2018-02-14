@@ -39,7 +39,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HH:MM:SS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1SK-D6-jBt">
-                        <rect key="frame" x="237" y="42.5" width="66" height="16"/>
+                        <rect key="frame" x="237" y="34" width="66" height="16"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -57,7 +57,7 @@
                     <constraint firstItem="QEY-Pd-ZLb" firstAttribute="leading" secondItem="tJA-pu-wQK" secondAttribute="leading" id="3AX-3H-ZvW"/>
                     <constraint firstItem="tJA-pu-wQK" firstAttribute="leading" secondItem="gn9-TY-zVp" secondAttribute="trailing" constant="20" id="6dQ-fl-kvf"/>
                     <constraint firstItem="gn9-TY-zVp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="E51-2c-sds"/>
-                    <constraint firstItem="1SK-D6-jBt" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RyY-Aw-2bF"/>
+                    <constraint firstItem="1SK-D6-jBt" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-8" id="RyY-Aw-2bF"/>
                     <constraint firstItem="QEY-Pd-ZLb" firstAttribute="top" secondItem="tJA-pu-wQK" secondAttribute="bottom" constant="1" id="Z7r-lm-FcX"/>
                     <constraint firstItem="1SK-D6-jBt" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="-5" id="maT-QE-2UD"/>
                     <constraint firstItem="tJA-pu-wQK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-10" id="nhi-xS-s5n"/>

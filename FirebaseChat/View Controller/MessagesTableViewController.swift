@@ -19,7 +19,8 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     override func viewDidLoad() {
         super.viewDidLoad()
         isUserLoggedIn()
-        observeMessages()
+//        observeMessages()
+        
         setupView()
     }
     
@@ -27,6 +28,42 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: reuseID)
         tableView.rowHeight = 80.0
+    }
+    
+    //fan out method to ensure that messages are delivered to the right user
+    func observeUserMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded, with: { (snapshot) in
+//            print(snapshot)
+            let msgID = snapshot.key
+            let msgRef = Database.database().reference().child("messages").child(msgID)
+            msgRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dict = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.fromID = dict["fromID"] as? String
+                    message.messageBody = dict["messageBody"] as? String
+                    message.timestamp = dict["timestamp"] as? NSNumber
+                    message.toID = dict["toID"] as? String
+                    //                self.messages.append(message)
+                    //get the message and sender grouped together
+                    if let toID = message.toID {
+                        self.messageDict[toID] = message
+                        //set the sender and message values for the tableview
+                        self.messages = Array(self.messageDict.values)
+                        self.messages.sort(by: { (message1, message2) -> Bool in
+                            return message1.timestamp!.intValue > message2.timestamp!.intValue
+                        })
+                    }
+                }
+                //call on main queue
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            })
+        })
     }
     
     //view messages that are in database
@@ -59,6 +96,20 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         })
     }
     
+    func addSeparator(to view: UITableViewCell) {
+        let separator = UIView()
+        view.addSubview(separator)
+        separator.backgroundColor = UIColor.lightGray
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        //constrants
+        NSLayoutConstraint.activate ([
+            separator.leftAnchor.constraint(equalTo: view.leftAnchor),
+            separator.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            separator.widthAnchor.constraint(equalTo: view.widthAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1.0)
+            ])
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,11 +122,30 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as! CustomTableViewCell
-        cell.updateCellUI()
+//        addSeparator(to: cell)
         let msg = messages[indexPath.row]
         cell.msg = msg
         
         return cell
+    }
+    
+    // MARK: - Table view delegate methods
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = messages[indexPath.row]
+        print(message.messageBody, message.toID, message.fromID)
+        guard let senderID = message.senderID() else { return }
+        let ref = Database.database().reference().child("users").child(senderID)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot)
+            guard let dict = snapshot.value as? [String: AnyObject] else { return }
+            let user = User()
+            user.id = senderID
+            user.name = dict["name"] as? String
+            user.profileImageUrl = dict["profileImageUrl"] as? String
+            user.email = dict["email"] as? String
+            self.showChatControllerForUser(user)
+        })
     }
     
     // MARK: - Setup and Action
@@ -97,6 +167,11 @@ class MessagesTableViewController: UITableViewController, UINavigationController
     }
     
     func setUpNavBarForUser() {
+        messages.removeAll()
+        messageDict.removeAll()
+        tableView.reloadData()
+        observeUserMessages()
+        
         guard let uid = Auth.auth().currentUser?.uid else { return }
  Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
             //                print(snapshot)

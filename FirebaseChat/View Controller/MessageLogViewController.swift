@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class MessageLogViewController: UIViewController {
+class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     var user: User? {
         didSet {
@@ -22,6 +22,7 @@ class MessageLogViewController: UIViewController {
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var messageTextField: UITextField!
+    let cellID = "cellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,18 @@ class MessageLogViewController: UIViewController {
     func setup() {
         messageTextField.delegate = self
         addSeparatorToView()
+        //collection view
+        chatCollectionView.delegate = self
+        chatCollectionView.dataSource = self
+        chatCollectionView?.backgroundColor = UIColor.white
+        chatCollectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: view.frame.height, height: 80)
+        chatCollectionView.collectionViewLayout = layout
     }
     
     //add a little flourish
@@ -62,13 +75,20 @@ class MessageLogViewController: UIViewController {
         let fromID = Auth.auth().currentUser!.uid
         let timestamp = Int(Date().timeIntervalSince1970)
         let values: [String:Any] = ["messageBody": messageTextField.text!, "toID": toID, "fromID": fromID, "timestamp": timestamp] 
-        childRef.setValue(values) {
+        childRef.updateChildValues(values) {
             (error, reference) in
             if error != nil {
                 print("Could not update message database", error!)
                 return
             }
-            print("Message saved!")
+            
+            let userMsgRef = Database.database().reference().child("user-messages").child(fromID)
+            let messageID = childRef.key
+            userMsgRef.updateChildValues([messageID: 1])
+            
+            let receiverOfUserMsgRef = Database.database().reference().child("user-messages").child(toID)
+            receiverOfUserMsgRef.updateChildValues([messageID: 1])
+            
             self.messageTextField.isEnabled = true
             self.sendButton.isEnabled = true
             self.messageTextField.text = ""
@@ -79,12 +99,30 @@ class MessageLogViewController: UIViewController {
         let messageRef = Database.database().reference().child("Messages")
         messageRef.observe(.childAdded) { (snapshot) in
             let snapshotValue = snapshot.value as! [String: String]
-            let text = snapshotValue["MessageBody"]!
-            let sender = snapshotValue["Sender"]!
+//            let text = snapshotValue["MessageBody"]!
+//            let sender = snapshotValue["Sender"]!
             
             
         }
     }
+    
+    // MARK: - Collection view data source
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
+        cell.backgroundColor = UIColor.blue
+        return cell
+    }
+    
+    // MARK: - Collection view delegate methods
+    
+//    func collectionView(_ collectionView: UICollectionView, layoutCollectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: view.frame.height, height: 80)
+//    }
     
 }
 
