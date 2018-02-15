@@ -34,6 +34,7 @@ class FetchUsersTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    //get list of all users from users database
     private func fetchUsersFromDatabase() {
         Database.database().reference().child("users").observe(.childAdded) { (snapshot) in
 //            print(snapshot)

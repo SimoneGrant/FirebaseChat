@@ -45,8 +45,8 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                     message.timestamp = dict["timestamp"] as? NSNumber
                     message.toID = dict["toID"] as? String
                     //get the message and sender grouped together
-                    if let toID = message.toID {
-                        self.messageDict[toID] = message
+                    if let senderID = message.senderID() {
+                        self.messageDict[senderID] = message
                         //set the sender and message values for the tableview
                         self.messages = Array(self.messageDict.values)
                         self.messages.sort(by: { (message1, message2) -> Bool in
@@ -85,11 +85,19 @@ class MessagesTableViewController: UITableViewController, UINavigationController
                     })
                 }
             }
-            //call on main queue
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
+            //reduce the amount of tableview reloads
+            self.timer?.invalidate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
+            
         })
+    }
+    
+    var timer: Timer?
+    @objc func reloadTable() {
+        //call on main queue
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func addSeparator(to view: UITableViewCell) {

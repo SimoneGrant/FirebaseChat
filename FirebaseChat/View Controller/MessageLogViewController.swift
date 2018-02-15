@@ -41,13 +41,8 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         chatCollectionView?.backgroundColor = UIColor.white
         chatCollectionView?.alwaysBounceVertical = true
         chatCollectionView?.register(MessageLogCell.self, forCellWithReuseIdentifier: cellID)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: view.frame.width, height: 80)
-        chatCollectionView.collectionViewLayout = layout
+        chatCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
+        chatCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
     }
     
     // MARK: - Action
@@ -78,10 +73,11 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             
             self.messageTextField.isEnabled = true
             self.sendButton.isEnabled = true
-            self.messageTextField.text = ""
+            self.messageTextField.text = nil
         }
     }
     
+    //observe sender/receiver info from user-messages and load text from messages
     func observeMessages() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let userMsgRef = Database.database().reference().child("user-messages").child(uid)
@@ -118,7 +114,69 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! MessageLogCell
         let msg = messages[indexPath.item]
         cell.textView.text = msg.messageBody
+        setupCell(cell, message: msg)
+        cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        cell.chatBubbleWidthAnchor?.constant = estimateFrame(for: msg.messageBody!).width + 32
+        //        print("This is textView contentsize: ", cell.textView.contentSize.width)
+        //        print("This is textView estimate frame size: ", estimateFrame(for: msg.messageBody!).width)
         return cell
+    }
+    
+    private func setupCell(_ cell: MessageLogCell, message: Message) {
+        if let profileImageUrl = self.user?.profileImageUrl {
+            cell.profileImageView.loadImageWithCache(using: profileImageUrl)
+        }
+        if let time = message.timestamp?.doubleValue {
+                let date = Date(timeIntervalSince1970: time)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "h:mm a"
+            cell.timeStampView.text = dateFormatter.string(from: date)
+        }
+//        cell.timeStampView.text = ""
+        
+        
+        if message.fromID == Auth.auth().currentUser?.uid {
+            //outgoing
+            cell.chatBubbleView.backgroundColor = MessageLogCell.blueColor
+            cell.textView.textColor = UIColor.white
+            cell.chatBubbleRightAnchor?.isActive = true
+            cell.chatBubbleLeftAnchor?.isActive = false
+            cell.profileImageView.isHidden = true
+            cell.timeStampRightAnchor?.isActive = true
+            cell.timeStampLeftAnchor?.isActive = false
+        } else {
+            //incoming
+            cell.chatBubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
+            cell.textView.textColor = UIColor.black
+            cell.chatBubbleRightAnchor?.isActive = false
+            cell.chatBubbleLeftAnchor?.isActive = true
+            cell.profileImageView.isHidden = false
+            cell.timeStampRightAnchor?.isActive = false
+            cell.timeStampLeftAnchor?.isActive = true
+        }
+    }
+    
+    // MARK: - Collection view delegate methods
+    
+    //using constraints this will allow the collectionview to maintain its position on rotation
+    func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        chatCollectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var cellHeight: CGFloat = 80
+        if let message = messages[indexPath.item].messageBody {
+            //add 20 pixels to extend height to fit all text
+            cellHeight = estimateFrame(for: message).height + 20
+        }
+        
+        return CGSize(width: view.frame.width, height: cellHeight)
+    }
+    
+    private func estimateFrame(for text: String) -> CGRect {
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)], context: nil)
     }
     
 }

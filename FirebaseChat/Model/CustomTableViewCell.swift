@@ -55,7 +55,7 @@ class CustomTableViewCell: UITableViewCell {
             if let seconds = msg?.timestamp?.doubleValue {
                 let date = Date(timeIntervalSince1970: seconds)
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm:ss a"
+                dateFormatter.dateFormat = "h:mm a"
                 timeLabel?.text = dateFormatter.string(from: date)
             }
         }
