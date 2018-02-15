@@ -34,7 +34,7 @@ class MessageLogCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "man")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 13
+        imageView.layer.cornerRadius = 16
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView

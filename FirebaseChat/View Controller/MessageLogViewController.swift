@@ -31,6 +31,12 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         setup()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        //remove observers here to prevent memory leak
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - Setup
     
     func setup() {
@@ -43,9 +49,38 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         chatCollectionView?.register(MessageLogCell.self, forCellWithReuseIdentifier: cellID)
         chatCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
         chatCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        chatCollectionView?.keyboardDismissMode = .interactive
+        setupKeyboardObservers()
     }
     
+    
     // MARK: - Action
+    
+    func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+//        let frame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+//        print(frame?.height)
+        let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        UIView.animate(withDuration: duration!) {
+            self.heightConstraint.constant = 308
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        let duration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+
+        UIView.animate(withDuration: duration!) {
+            self.heightConstraint.constant = 50
+            self.view.layoutIfNeeded()
+        }
+    }
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         messageTextField.endEditing(true)
@@ -117,8 +152,6 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         setupCell(cell, message: msg)
         cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         cell.chatBubbleWidthAnchor?.constant = estimateFrame(for: msg.messageBody!).width + 32
-        //        print("This is textView contentsize: ", cell.textView.contentSize.width)
-        //        print("This is textView estimate frame size: ", estimateFrame(for: msg.messageBody!).width)
         return cell
     }
     
@@ -126,6 +159,7 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         if let profileImageUrl = self.user?.profileImageUrl {
             cell.profileImageView.loadImageWithCache(using: profileImageUrl)
         }
+        
         if let time = message.timestamp?.doubleValue {
             let date = Date(timeIntervalSince1970: time)
             let dateFormatter = DateFormatter()
@@ -185,6 +219,47 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)], context: nil)
     }
+    
+    
+    
+    //TODO: Implement this feature at a later point (slide down keyboard and text field)
+    
+    //create a reference to the accessory view because the texfield inside it is not accessible
+    //  lazy var inputContainerView: UIView = {
+    //        let baseContainerView = UIView()
+    //        baseContainerView.frame = CGRect(x: 0, y:0 , width: self.view.frame.width, height: 50)
+    //        baseContainerView.backgroundColor = UIColor.white
+    //
+    //        let textField = UITextField()
+    //        textField.placeholder = "Enter some text"
+    //        baseContainerView.addSubview(textField)
+    //        textField.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 90, height: 50)
+    //
+    //        let button = UIButton(type: .system)
+    //        baseContainerView.addSubview(button)
+    //        button.setTitle("SEND", for: .normal)
+    //        button.translatesAutoresizingMaskIntoConstraints = false
+    //
+    //        NSLayoutConstraint.activate ([
+    //            button.rightAnchor.constraint(equalTo: baseContainerView.rightAnchor),
+    //            button.centerYAnchor.constraint(equalTo: baseContainerView.centerYAnchor),
+    //            button.widthAnchor.constraint(equalToConstant: 80),
+    //            button.heightAnchor.constraint(equalTo: baseContainerView.heightAnchor),
+    //            textField.leftAnchor.constraint(equalTo: baseContainerView.leftAnchor, constant: 10),
+    //            textField.centerYAnchor.constraint(equalTo: baseContainerView.centerYAnchor),
+    //            textField.rightAnchor.constraint(equalTo: button.leftAnchor),
+    //            textField.heightAnchor.constraint(equalTo: baseContainerView.heightAnchor)
+    //            ])
+    //
+    //        return baseContainerView
+    //    }()
+    //
+    //     override var inputAccessoryView: UIView? {
+    //        get {
+    //            return inputContainerView
+    //        }
+    //    }
+    
 }
 
 // MARK: - Text field delegate
@@ -196,16 +271,10 @@ extension MessageLogViewController: UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.5) {
-            self.heightConstraint.constant = 308
-            self.view.layoutIfNeeded()
-        }
+
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        UIView.animate(withDuration: 0.5) {
-            self.heightConstraint.constant = 50
-            self.view.layoutIfNeeded()
-        }
+
     }
 }
