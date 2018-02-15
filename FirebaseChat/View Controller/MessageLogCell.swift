@@ -64,8 +64,8 @@ class MessageLogCell: UICollectionViewCell {
         addSubview(chatBubbleView)
         addSubview(textView)
         NSLayoutConstraint.activate ([
-            timeStampView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 5),
-            timeStampView.widthAnchor.constraint(equalToConstant: 70),
+            timeStampView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        timeStampView.widthAnchor.constraint(equalToConstant: 100),
             timeStampView.heightAnchor.constraint(equalTo: self.heightAnchor),
             //imageView
             profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
@@ -85,8 +85,8 @@ class MessageLogCell: UICollectionViewCell {
         chatBubbleWidthAnchor = chatBubbleView.widthAnchor.constraint(equalToConstant: 200)
         chatBubbleRightAnchor = chatBubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
         chatBubbleLeftAnchor = chatBubbleView.leftAnchor.constraint(equalTo: profileImageView.rightAnchor, constant: 8)
-        timeStampRightAnchor = timeStampView.trailingAnchor.constraint(equalTo: chatBubbleView.leadingAnchor, constant: -5)
-        timeStampLeftAnchor = timeStampView.leadingAnchor.constraint(equalTo: chatBubbleView.trailingAnchor, constant: 5)
+        timeStampRightAnchor = timeStampView.rightAnchor.constraint(equalTo: chatBubbleView.leftAnchor, constant: -5)
+        timeStampLeftAnchor = timeStampView.leftAnchor.constraint(equalTo: chatBubbleView.rightAnchor, constant: 5)
         chatBubbleWidthAnchor?.isActive = true
         chatBubbleRightAnchor?.isActive = true
         timeStampLeftAnchor?.isActive = true

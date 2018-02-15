@@ -127,13 +127,18 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             cell.profileImageView.loadImageWithCache(using: profileImageUrl)
         }
         if let time = message.timestamp?.doubleValue {
-                let date = Date(timeIntervalSince1970: time)
-                let dateFormatter = DateFormatter()
+            let date = Date(timeIntervalSince1970: time)
+            let dateFormatter = DateFormatter()
+            let today = Date()
+            
+            if Calendar.current.isDateInToday(today) == Calendar.current.isDateInToday(date) {
                 dateFormatter.dateFormat = "h:mm a"
-            cell.timeStampView.text = dateFormatter.string(from: date)
+                cell.timeStampView.text = dateFormatter.string(from: date)
+            } else {
+                dateFormatter.dateFormat = "M/dd h:mm a"
+                cell.timeStampView.text = dateFormatter.string(from: date)
+            }
         }
-//        cell.timeStampView.text = ""
-        
         
         if message.fromID == Auth.auth().currentUser?.uid {
             //outgoing
@@ -144,6 +149,7 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             cell.profileImageView.isHidden = true
             cell.timeStampRightAnchor?.isActive = true
             cell.timeStampLeftAnchor?.isActive = false
+            cell.timeStampView.textAlignment = .right
         } else {
             //incoming
             cell.chatBubbleView.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)
@@ -153,6 +159,7 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             cell.profileImageView.isHidden = false
             cell.timeStampRightAnchor?.isActive = false
             cell.timeStampLeftAnchor?.isActive = true
+            cell.timeStampView.textAlignment = .left
         }
     }
     
@@ -178,7 +185,6 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16)], context: nil)
     }
-    
 }
 
 // MARK: - Text field delegate
