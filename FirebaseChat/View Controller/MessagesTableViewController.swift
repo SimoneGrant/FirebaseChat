@@ -9,12 +9,25 @@
 import UIKit
 import Firebase
 import SVProgressHUD
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class MessagesTableViewController: UITableViewController, UINavigationControllerDelegate {
     
+    @IBOutlet weak var addChat: UIBarButtonItem!
     @IBOutlet weak var pickerButton: UIBarButtonItem!
     let profileImageView = UIImageView()
     let reuseID = "CustomCell"
+    var messages = [Message]()
+    var messageDict = [String:Message]()
+    var timer: Timer?
+    
+    var addButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "add"), for: .normal)
+        button.frame = CGRect(x:0, y:0, width: 30, height: 30)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +39,15 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let nib = UINib(nibName: "CustomTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: reuseID)
         tableView.rowHeight = 80.0
+        addChat.customView = addButton
     }
+    
+//    func isFBLoggedIn() {
+//        let current: FBSDKAccessToken?
+//        if current?.currentAccessToken {
+//            // User is logged in, do work such as go to next view controller.
+//        }
+//    }
     
     //fan out method to ensure that messages are delivered to the right user
     func observeUserMessages() {
@@ -34,71 +55,48 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         let ref = Database.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
 //            print(snapshot)
-            let msgID = snapshot.key
-            let msgRef = Database.database().reference().child("messages").child(msgID)
-            msgRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let dict = snapshot.value as? [String: AnyObject] {
-                    let message = Message()
-                    message.fromID = dict["fromID"] as? String
-                    message.messageBody = dict["messageBody"] as? String
-                    message.timestamp = dict["timestamp"] as? NSNumber
-                    message.toID = dict["toID"] as? String
-                    //get the message and sender grouped together
-                    if let senderID = message.senderID() {
-                        self.messageDict[senderID] = message
-                        //set the sender and message values for the tableview
-                        self.messages = Array(self.messageDict.values)
-                        self.messages.sort(by: { (message1, message2) -> Bool in
-                            return message1.timestamp!.intValue > message2.timestamp!.intValue
-                        })
-                    }
-                }
-                //call on main queue
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                
+            let userID = snapshot.key
+            Database.database().reference().child("user-messages").child(uid).child(userID).observe(.childAdded, with: { (snapshot) in
+//                print(snapshot)
+                let msgID = snapshot.key
+                self.getMessageWith(msgID)
             })
         })
     }
     
-    //view messages that are in database
-    var messages = [Message]()
-    var messageDict = [String:Message]()
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
-        ref.observe(.childAdded, with: { (snapshot) in
+    fileprivate func getMessageWith(_ id: String) {
+        let msgRef = Database.database().reference().child("messages").child(id)
+        msgRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
             if let dict = snapshot.value as? [String: AnyObject] {
-            let message = Message()
+                let message = Message()
                 message.fromID = dict["fromID"] as? String
                 message.messageBody = dict["messageBody"] as? String
                 message.timestamp = dict["timestamp"] as? NSNumber
                 message.toID = dict["toID"] as? String
-                //get the message and sender grouped together
-                if let toID = message.toID {
-                    self.messageDict[toID] = message
-                    //set the sender and message values for the tableview
-                    self.messages = Array(self.messageDict.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return message1.timestamp!.intValue > message2.timestamp!.intValue
-                    })
+                if let senderID = message.senderID() {
+                    self.messageDict[senderID] = message
                 }
+                self.reloadTable()
             }
-            //reduce the amount of tableview reloads
-            self.timer?.invalidate()
-            self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.reloadTable), userInfo: nil, repeats: false)
-            
         })
     }
-    
-    var timer: Timer?
-    @objc func reloadTable() {
-        //call on main queue
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        
+        fileprivate func reloadTable() {
+            self.timer?.invalidate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
         }
+  
+        @objc func handleReloadTable() {
+            self.messages = Array(self.messageDict.values)
+            self.messages.sort(by: { (message1, message2) -> Bool in
+                return message1.timestamp!.intValue > message2.timestamp!.intValue
+            })
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
     }
+    
     
     func addSeparator(to view: UITableViewCell) {
         let separator = UIView()
@@ -141,7 +139,7 @@ class MessagesTableViewController: UITableViewController, UINavigationController
         guard let senderID = message.senderID() else { return }
         let ref = Database.database().reference().child("users").child(senderID)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print(snapshot)
+//            print(snapshot)
             guard let dict = snapshot.value as? [String: AnyObject] else { return }
             let user = User()
             user.id = senderID

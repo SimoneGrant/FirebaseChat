@@ -50,5 +50,39 @@ class LoginViewController: UIViewController {
         print("password reset requested")
     }
     
+    @IBAction func googleSignInPressed(_ sender: UIButton) {
+        loginWithGoogle()
+    }
+    
+    @IBAction func facebookLoginPressed(_ sender: UIButton) {
+        loginWithFacebook()
+    }
+    
+    @IBAction func twitterLoginPressed(_ sender: UIButton) {
+        loginWithTwitter()
+    }
 }
+
+//  MARK: - 3rd party authentication
+
+extension LoginViewController {
+    
+    // MARK: - Google Auth
+    func loginWithGoogle() {
+        
+    }
+    
+    
+    // MARK: - Facebook Auth
+    func loginWithFacebook() {
+        
+    }
+    
+    // MARK - Twitter Auth
+    func loginWithTwitter() {
+        
+    }
+    
+}
+
 

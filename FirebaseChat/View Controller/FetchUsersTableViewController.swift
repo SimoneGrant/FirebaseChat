@@ -85,7 +85,6 @@ class FetchUsersTableViewController: UITableViewController {
      override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true) {
             let user = self.users[indexPath.row]
-            print(user)
             self.messagesController?.showChatControllerForUser(user)
         }
     }

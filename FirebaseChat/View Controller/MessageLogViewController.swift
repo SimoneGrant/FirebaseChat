@@ -17,13 +17,13 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
             observeMessages()
         }
     }
-    var messages = [Message]()
     
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var chatCollectionView: UICollectionView!
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var messageTextField: UITextField!
+    var messages = [Message]()
     let cellID = "cellId"
     
     override func viewDidLoad() {
@@ -99,11 +99,11 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
                 return
             }
             
-            let userMsgRef = Database.database().reference().child("user-messages").child(fromID)
+            let userMsgRef = Database.database().reference().child("user-messages").child(fromID).child(toID)
             let messageID = childRef.key
             userMsgRef.updateChildValues([messageID: 1])
             
-            let receiverOfUserMsgRef = Database.database().reference().child("user-messages").child(toID)
+            let receiverOfUserMsgRef = Database.database().reference().child("user-messages").child(toID).child(fromID)
             receiverOfUserMsgRef.updateChildValues([messageID: 1])
             
             self.messageTextField.isEnabled = true
@@ -114,26 +114,24 @@ class MessageLogViewController: UIViewController, UICollectionViewDelegate,  UIC
     
     //observe sender/receiver info from user-messages and load text from messages
     func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let userMsgRef = Database.database().reference().child("user-messages").child(uid)
+        guard let uid = Auth.auth().currentUser?.uid, let toID = user?.id else { return }
+        let userMsgRef = Database.database().reference().child("user-messages").child(uid).child(toID)
         userMsgRef.observe(.childAdded, with: { (snapshot) in
             let messageID = snapshot.key
             let msgRef = Database.database().reference().child("messages").child(messageID)
             msgRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                print(snapshot)
+//                print(snapshot)
                 guard let dict = snapshot.value as? [String:AnyObject] else { return }
                 let message = Message()
                 message.fromID = dict["fromID"] as? String
                 message.messageBody = dict["messageBody"] as? String
                 message.timestamp = dict["timestamp"] as? NSNumber
                 message.toID = dict["toID"] as? String
+                self.messages.append(message)
                 
-                if message.senderID() == self.user?.id {
-                    self.messages.append(message)
                     DispatchQueue.main.async {
                         self.chatCollectionView.reloadData()
                     }
-                }
             })
             
         })
